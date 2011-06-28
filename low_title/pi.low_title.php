@@ -177,8 +177,17 @@ class Low_title {
 		// sql for pages uri
 		if ($params['pages_uri'])
 		{
-			// Get site pages
-			$pages = $this->EE->config->config['site_pages'];
+      // Normalize slashes
+      $params['pages_uri'] = '/' . trim($params['pages_uri'], '/') . '/';
+
+		  // Get all sites pages
+		  $pages = $this->EE->config->config['site_pages'];
+			
+      // Get current site_id
+      $site_id = $this->EE->config->config['site_id'];
+      
+      // Get current site pages
+			$pages = isset($pages[$site_id]) ? $pages[$site_id] : false;
 			
 			// Flip id => page_uri
 			if (is_array($pages) && is_array($pages['uris']))
