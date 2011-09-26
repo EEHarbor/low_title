@@ -2,10 +2,10 @@
 
 $plugin_info = array(
 	'pi_name'			=> 'Low Title',
-	'pi_version'		=> '2.0',
+	'pi_version'		=> '2.0.1',
 	'pi_author'			=> 'Lodewijk Schutte ~ Low',
-	'pi_author_url'		=> 'http://loweblog.com/freelance/article/ee-title-plugin/',
-	'pi_description'	=> 'Plugin to quickly retrieve a title from an entry, category, weblog or site',
+	'pi_author_url'		=> 'http://gotolow.com/software/low-title',
+	'pi_description'	=> 'Plugin to quickly retrieve a title from an entry, category, channel or site',
 	'pi_usage'			=> Low_title::usage()
 );
 
@@ -13,9 +13,9 @@ $plugin_info = array(
 * Low Title Plugin Class
 *
 * @package			low-title-ee2_addon
-* @version			2.0
-* @author			Lodewijk Schutte ~ Low <low@loweblog.com>
-* @link				http://loweblog.com/freelance/article/ee-title-plugin/
+* @version			2.0.1
+* @author			Lodewijk Schutte ~ Low <hi@gotolow.com>
+* @link				http://gotolow.com/software/low-title
 * @license			http://creativecommons.org/licenses/by-sa/3.0/
 */
 class Low_title {
@@ -177,18 +177,18 @@ class Low_title {
 		// sql for pages uri
 		if ($params['pages_uri'])
 		{
-      // Normalize slashes
-      $params['pages_uri'] = '/' . trim($params['pages_uri'], '/') . '/';
+			// Normalize slashes
+			// $params['pages_uri'] = '/' . trim($params['pages_uri'], '/') . '/';
 
-		  // Get all sites pages
-		  $pages = $this->EE->config->config['site_pages'];
-			
-      // Get current site_id
-      $site_id = $this->EE->config->config['site_id'];
-      
-      // Get current site pages
-			$pages = isset($pages[$site_id]) ? $pages[$site_id] : false;
-			
+			// Get all sites pages
+			$pages = $this->EE->config->config['site_pages'];
+
+			// Get current site_id
+			$site_id = $this->EE->config->config['site_id'];
+
+			// Get current site pages
+			$pages = isset($pages[$site_id]) ? $pages[$site_id] : FALSE;
+
 			// Flip id => page_uri
 			if (is_array($pages) && is_array($pages['uris']))
 			{
