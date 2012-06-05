@@ -1,119 +1,113 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 $plugin_info = array(
-	'pi_name'			=> 'Low Title',
-	'pi_version'		=> '2.0.1',
-	'pi_author'			=> 'Lodewijk Schutte ~ Low',
-	'pi_author_url'		=> 'http://gotolow.com/software/low-title',
-	'pi_description'	=> 'Plugin to quickly retrieve a title from an entry, category, channel or site',
-	'pi_usage'			=> Low_title::usage()
+	'pi_name'        => 'Low Title',
+	'pi_version'     => '2.1.0',
+	'pi_author'      => 'Lodewijk Schutte ~ Low',
+	'pi_author_url'  => 'http://gotolow.com/software/low-title',
+	'pi_description' => 'Plugin to quickly retrieve a title from an entry, category, channel or site',
+	'pi_usage'       => Low_title::usage()
 );
 
 /**
-* Low Title Plugin Class
-*
-* @package			low-title-ee2_addon
-* @version			2.0.1
-* @author			Lodewijk Schutte ~ Low <hi@gotolow.com>
-* @link				http://gotolow.com/software/low-title
-* @license			http://creativecommons.org/licenses/by-sa/3.0/
-*/
+ * Low Title Plugin Class
+ *
+ * @package        low_title
+ * @version        2.1.0
+ * @author         Lodewijk Schutte ~ Low <hi@gotolow.com>
+ * @link           http://gotolow.com/software/low-title
+ * @license        http://creativecommons.org/licenses/by-sa/3.0/
+ */
 class Low_title {
 
 	/**
-	* Plugin return data
-	*
-	* @var	string
-	*/
-	var $return_data;
+	 * Plugin return data
+	 *
+	 * @var	string
+	 */
+	public $return_data;
 
 	// --------------------------------------------------------------------
 
 	/**
-	* PHP4 Constructor
-	*
-	* @see	__construct()
-	*/
+	 * PHP4 Constructor
+	 *
+	 * @see	__construct()
+	 */
 	function Low_title()
 	{
 		$this->__construct();
 	}
 
-	// --------------------------------------------------------------------
-
 	/**
-	* PHP5 Constructor
-	*/
+	 * PHP5 Constructor
+	 */
 	function __construct()
 	{
-		/** -------------------------------------
-		/**  Get global instance
-		/** -------------------------------------*/
-
 		$this->EE =& get_instance();
 	}
 
 	// --------------------------------------------------------------------
 
 	/**
-	* Entry
-	*
-	* Get title for entry
-	*
-	* @return	string
-	*/
+	 * Entry
+	 *
+	 * Get title for entry
+	 *
+	 * @return	string
+	 */
 	function entry()
 	{
-		/** -------------------------------------
-		/**  Initiate parameters and vars
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Initiate parameters and vars
+		// -------------------------------------
 		
 		$params = array(
-			'entry_id'		=> '',
-			'url_title'		=> '',
-			'weblog_id'		=> '',
-			'weblog'		=> '',
-			'custom_field'	=> '',
-			'channel_id'	=> '',
-			'channel'		=> '',
-			'pages_uri'		=> '',
-			'show_error'	=> '',
-			'fallback'		=> ''
+			'entry_id'     => '',
+			'url_title'    => '',
+			'weblog_id'    => '',
+			'weblog'       => '',
+			'custom_field' => '',
+			'channel_id'   => '',
+			'channel'      => '',
+			'pages_uri'    => '',
+			'show_error'   => '',
+			'fallback'     => ''
 		);
 		
 		$field_id = FALSE;
 		$sql_select = 'title';
 
-		/** -------------------------------------
-		/**  Loop through parameters, set value
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Loop through parameters, set value
+		// -------------------------------------
 
 		foreach ($params AS $key => $value)
 		{
 			$params[$key] = $this->EE->TMPL->fetch_param($key);
 		}
 
-		/** -------------------------------------
-		/**  Convert 'weblog_id' to 'channel_id'
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Convert 'weblog_id' to 'channel_id'
+		// -------------------------------------
 
 		if ( !$params['channel_id'] && $params['weblog_id'] )
 		{
 			$params['channel_id'] = $params['weblog_id'];
 		}
 
-		/** -------------------------------------
-		/**  Convert 'weblog' to 'channel'
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Convert 'weblog' to 'channel'
+		// -------------------------------------
 
 		if ( !$params['channel'] && $params['weblog'] )
 		{
 			$params['channel'] = $params['weblog'];
 		}
 		
-		/** -------------------------------------
-		/**  Custom field? Get its ID
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Custom field? Get its ID
+		// -------------------------------------
 		
 		if ($params['custom_field'])
 		{
@@ -139,9 +133,9 @@ class Low_title {
 			}
 		}
 		
-		/** -------------------------------------
-		/**  Start composing query
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Start composing query
+		// -------------------------------------
 		
 		$this->EE->db->select($sql_select, FALSE);
 		$this->EE->db->from('exp_channel_titles AS t');
@@ -221,9 +215,9 @@ class Low_title {
 		// execute query
 		$query = $this->EE->db->get();
 		
-		/** -------------------------------------
-		/**  Return formatted or empty string
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Return formatted or empty string
+		// -------------------------------------
 		
 		if ($query->num_rows())
 		{
@@ -242,18 +236,18 @@ class Low_title {
 	// --------------------------------------------------------------------
 	
 	/**
-	* Category
-	*
-	* Get title for category
-	*
-	* @access	public
-	* @return	string
-	*/
+	 * Category
+	 *
+	 * Get title for category
+	 *
+	 * @access	public
+	 * @return	string
+	 */
 	function category()
 	{
-		/** -------------------------------------
-		/**  Initiate parameters and vars
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Initiate parameters and vars
+		// -------------------------------------
 
 		$params = array(
 			'category_id'	=> '',
@@ -267,18 +261,18 @@ class Low_title {
 		$field_id = FALSE;
 		$sql_select = 'cat_name';
 
-		/** -------------------------------------
-		/**  Loop through parameters, set value
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Loop through parameters, set value
+		// -------------------------------------
 
 		foreach ($params AS $key => $value)
 		{
 			$params[$key] = $this->EE->TMPL->fetch_param($key);
 		}
 		
-		/** -------------------------------------
-		/**  Custom field? Get its ID
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Custom field? Get its ID
+		// -------------------------------------
 		
 		if ($params['custom_field'])
 		{
@@ -304,9 +298,9 @@ class Low_title {
 			}
 		}
 		
-		/** -------------------------------------
-		/**  Start composing query
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Start composing query
+		// -------------------------------------
 		
 		$this->EE->db->select(($field_id ? "d.field_id_{$field_id}" : 'cat_name').' AS title', FALSE);
 		$this->EE->db->from('exp_categories AS c');
@@ -341,9 +335,9 @@ class Low_title {
 		// execute query
 		$query = $this->EE->db->get();
 		
-		/** -------------------------------------
-		/**  Return formatted or empty string
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Return formatted or empty string
+		// -------------------------------------
 		
 		if ($query->num_rows())
 		{
@@ -362,18 +356,18 @@ class Low_title {
 	// --------------------------------------------------------------------
 	
 	/**
-	* Channel
-	*
-	* Get title for channel
-	*
-	* @access	public
-	* @return	string
-	*/
+	 * Channel
+	 *
+	 * Get title for channel
+	 *
+	 * @access	public
+	 * @return	string
+	 */
 	function channel()
 	{
-		/** -------------------------------------
-		/**  Initiate parameters and vars
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Initiate parameters and vars
+		// -------------------------------------
 		
 		$params = array(
 			'weblog_id'		=> '',
@@ -382,36 +376,36 @@ class Low_title {
 			'channel_name'	=> ''
 		);
 
-		/** -------------------------------------
-		/**  Loop through parameters, set value
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Loop through parameters, set value
+		// -------------------------------------
 
 		foreach ($params AS $key => $value)
 		{
 			$params[$key] = $this->EE->TMPL->fetch_param($key);
 		}
 
-		/** -------------------------------------
-		/**  Convert 'weblog_id' to 'channel_id'
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Convert 'weblog_id' to 'channel_id'
+		// -------------------------------------
 
 		if ( !$params['channel_id'] && $params['weblog_id'] )
 		{
 			$params['channel_id'] = $params['weblog_id'];
 		}
 
-		/** -------------------------------------
-		/**  Convert 'weblog_name' to 'channel_name'
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Convert 'weblog_name' to 'channel_name'
+		// -------------------------------------
 
 		if ( !$params['channel_name'] && $params['weblog_name'] )
 		{
 			$params['channel_name'] = $params['weblog_name'];
 		}
 
-		/** -------------------------------------
-		/**  Start composing query
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Start composing query
+		// -------------------------------------
 		
 		$this->EE->db->select('channel_title AS title');
 		$this->EE->db->from('exp_channels');
@@ -434,9 +428,9 @@ class Low_title {
 		// execute query
 		$query = $this->EE->db->get();
 		
-		/** -------------------------------------
-		/**  Return formatted or empty string
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Return formatted or empty string
+		// -------------------------------------
 		
 		if ($query->num_rows())
 		{
@@ -455,12 +449,12 @@ class Low_title {
 	// --------------------------------------------------------------------
 	
 	/**
-	* Weblog
-	*
-	* Alias for Channel
-	*
-	* @see		channel()
-	*/
+	 * Weblog
+	 *
+	 * Alias for Channel
+	 *
+	 * @see		channel()
+	 */
 	function weblog()
 	{
 		return $this->channel();
@@ -469,36 +463,36 @@ class Low_title {
 	// --------------------------------------------------------------------
 	
 	/**
-	* Site
-	*
-	* Get title for site
-	*
-	* @access	public
-	* @return	string
-	*/		
+	 * Site
+	 *
+	 * Get title for site
+	 *
+	 * @access	public
+	 * @return	string
+	 */		
 	function site()
 	{
-		/** -------------------------------------
-		/**  Initiate parameters and vars
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Initiate parameters and vars
+		// -------------------------------------
 		
 		$params = array(
 			'site_id'	=> '',
 			'site_name'	=> ''
 		);		
 
-		/** -------------------------------------
-		/**  Loop through parameters, set value
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Loop through parameters, set value
+		// -------------------------------------
 
 		foreach ($params AS $key => $value)
 		{
 			$params[$key] = $this->EE->TMPL->fetch_param($key);
 		}
 
-		/** -------------------------------------
-		/**  Start composing query
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Start composing query
+		// -------------------------------------
 		
 		$this->EE->db->select('site_label AS title');
 		$this->EE->db->from('exp_sites');
@@ -521,9 +515,9 @@ class Low_title {
 		// execute query
 		$query = $this->EE->db->get();
 		
-		/** -------------------------------------
-		/**  Return formatted or empty string
-		/** -------------------------------------*/
+		// -------------------------------------
+		//  Return formatted or empty string
+		// -------------------------------------
 		
 		if ($query->num_rows())
 		{
@@ -542,13 +536,13 @@ class Low_title {
 	// --------------------------------------------------------------------
 	
 	/**
-	* Format
-	*
-	* Format return data
-	*
-	* @access	private
-	* @return	void
-	*/		
+	 * Format
+	 *
+	 * Format return data
+	 *
+	 * @access	private
+	 * @return	void
+	 */		
 	function _format()
 	{
 		if ( !strlen($this->return_data) || $this->EE->TMPL->fetch_param('format') === 'no' ) return;
@@ -561,13 +555,13 @@ class Low_title {
 	// --------------------------------------------------------------------
 	
 	/**
-	* Usage
-	*
-	* Plugin Usage
-	*
-	* @access	public
-	* @return	string
-	*/
+	 * Usage
+	 *
+	 * Plugin Usage
+	 *
+	 * @access	public
+	 * @return	string
+	 */
 	function usage()
 	{
 		ob_start(); 
