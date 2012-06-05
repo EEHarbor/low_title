@@ -77,10 +77,12 @@ class Low_title {
 			'channel_id'	=> '',
 			'channel'		=> '',
 			'pages_uri'		=> '',
-			'show_error'	=> ''
+			'show_error'	=> '',
+			'fallback'		=> ''
 		);
 		
 		$field_id = FALSE;
+		$sql_select = 'title';
 
 		/** -------------------------------------
 		/**  Loop through parameters, set value
@@ -124,6 +126,7 @@ class Low_title {
 			{
 				$row = $query->row();
 				$field_id = $row->field_id;
+				$sql_select = (($params['fallback'] == 'yes') ? "IF(d.field_id_{$field_id}='',t.title,d.field_id_{$field_id})" : "d.field_id_{$field_id}") . " AS title";
 			}
 			else
 			{
@@ -140,7 +143,7 @@ class Low_title {
 		/**  Start composing query
 		/** -------------------------------------*/
 		
-		$this->EE->db->select(($field_id ? "d.field_id_{$field_id} AS title" : 'title'));
+		$this->EE->db->select($sql_select, FALSE);
 		$this->EE->db->from('exp_channel_titles AS t');
 		$this->EE->db->join('exp_channels AS ch', 't.channel_id = ch.channel_id');
 
@@ -232,7 +235,7 @@ class Low_title {
 		{
 			$this->return_data = '';
 		}
-
+		$this->EE->TMPL->log_item("Low Title, returning ".$this->return_data);
 		return $this->return_data;
 	}
 
@@ -257,10 +260,12 @@ class Low_title {
 			'url_title'		=> '',
 			'category_group'=> '',
 			'custom_field'	=> '',
-			'show_error'	=> ''
+			'show_error'	=> '',
+			'fallback'		=> ''
 		);
 		
 		$field_id = FALSE;
+		$sql_select = 'cat_name';
 
 		/** -------------------------------------
 		/**  Loop through parameters, set value
@@ -286,6 +291,7 @@ class Low_title {
 			{
 				$row = $query->row();
 				$field_id = $row->field_id;
+				$sql_select = (($params['fallback'] == 'yes') ? "IF(d.field_id_{$field_id}='',c.cat_name,d.field_id_{$field_id})" : "d.field_id_{$field_id}");
 			}
 			else
 			{
@@ -302,7 +308,7 @@ class Low_title {
 		/**  Start composing query
 		/** -------------------------------------*/
 		
-		$this->EE->db->select(($field_id ? "d.field_id_{$field_id}" : 'cat_name').' AS title');
+		$this->EE->db->select(($field_id ? "d.field_id_{$field_id}" : 'cat_name').' AS title', FALSE);
 		$this->EE->db->from('exp_categories AS c');
 
 		// extra join if needed
@@ -572,14 +578,16 @@ class Low_title {
 			{exp:low_title:entry pages_uri="/{segment_1}/"}
 			{exp:low_title:entry url_title="{segment_2}" channel="default_site"}
 			{exp:low_title:entry url_title="{segment_3}" custom_field="title_{language}"}
+			{exp:low_title:entry url_title="{segment_3}" custom_field="title_{language}" fallback="yes"}
 
 			{exp:low_title:category category_id="18"}
 			{exp:low_title:category category_id="C24"}
 			{exp:low_title:category url_title="{segment_4}" category_group="1"}
 			{exp:low_title:category url_title="{segment_3}" custom_field="title_{language}"}
+			{exp:low_title:category url_title="{segment_3}" custom_field="title_{language}" fallback="yes"}
 
-			{exp:low_title:channel weblog_id="3"}
-			{exp:low_title:channel weblog_name="{segment_1}" format="no"}
+			{exp:low_title:channel channel_id="3"}
+			{exp:low_title:channel channel_name="{segment_1}" format="no"}
 
 			{exp:low_title:site site_id="1"}
 			{exp:low_title:site site_name="{segment_1}"}
