@@ -2,7 +2,7 @@
 
 $plugin_info = array(
 	'pi_name'        => 'Low Title',
-	'pi_version'     => '2.1.0',
+	'pi_version'     => '2.1.1',
 	'pi_author'      => 'Lodewijk Schutte ~ Low',
 	'pi_author_url'  => 'http://gotolow.com/software/low-title',
 	'pi_description' => 'Plugin to quickly retrieve a title from an entry, category, channel or site',
