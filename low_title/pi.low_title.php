@@ -6,7 +6,7 @@ $plugin_info = array(
 	'pi_author'      => 'Lodewijk Schutte ~ Low',
 	'pi_author_url'  => 'http://gotolow.com/software/low-title',
 	'pi_description' => 'Plugin to quickly retrieve a title from an entry, category, channel or site',
-	'pi_usage'       => Low_title::usage()
+	'pi_usage'       => 'See http://gotolow.com/software/low-title for more info'
 );
 
 /**
@@ -26,21 +26,11 @@ if ( ! function_exists('ee'))
  * Low Title Plugin Class
  *
  * @package        low_title
- * @version        2.1.0
  * @author         Lodewijk Schutte ~ Low <hi@gotolow.com>
  * @link           http://gotolow.com/software/low-title
  * @license        http://creativecommons.org/licenses/by-sa/3.0/
  */
 class Low_title {
-
-	/**
-	 * Plugin return data
-	 *
-	 * @var	string
-	 */
-	public $return_data;
-
-	// --------------------------------------------------------------------
 
 	/**
 	 * Entry
@@ -49,7 +39,7 @@ class Low_title {
 	 *
 	 * @return	string
 	 */
-	function entry()
+	public function entry()
 	{
 		// -------------------------------------
 		//  Initiate parameters and vars
@@ -236,7 +226,7 @@ class Low_title {
 	 * @access	public
 	 * @return	string
 	 */
-	function category()
+	public function category()
 	{
 		// -------------------------------------
 		//  Initiate parameters and vars
@@ -356,7 +346,7 @@ class Low_title {
 	 * @access	public
 	 * @return	string
 	 */
-	function channel()
+	public function channel()
 	{
 		// -------------------------------------
 		//  Initiate parameters and vars
@@ -448,7 +438,7 @@ class Low_title {
 	 *
 	 * @see		channel()
 	 */
-	function weblog()
+	public function weblog()
 	{
 		return $this->channel();
 	}
@@ -463,7 +453,7 @@ class Low_title {
 	 * @access	public
 	 * @return	string
 	 */
-	function site()
+	public function site()
 	{
 		// -------------------------------------
 		//  Initiate parameters and vars
@@ -536,7 +526,7 @@ class Low_title {
 	 * @access	private
 	 * @return	void
 	 */
-	function _format()
+	private function _format()
 	{
 		if ( !strlen($this->return_data) || ee()->TMPL->fetch_param('format') === 'no' ) return;
 
@@ -545,46 +535,6 @@ class Low_title {
 		$this->return_data = ee()->typography->format_characters($this->return_data);
 	}
 
-	// --------------------------------------------------------------------
-
-	/**
-	 * Usage
-	 *
-	 * Plugin Usage
-	 *
-	 * @access	public
-	 * @return	string
-	 */
-	function usage()
-	{
-		ob_start();
-		?>
-			Some examples:
-
-			{exp:low_title:entry entry_id="15" format="no"}
-			{exp:low_title:entry pages_uri="/{segment_1}/"}
-			{exp:low_title:entry url_title="{segment_2}" channel="default_site"}
-			{exp:low_title:entry url_title="{segment_3}" custom_field="title_{language}"}
-			{exp:low_title:entry url_title="{segment_3}" custom_field="title_{language}" fallback="yes"}
-
-			{exp:low_title:category category_id="18"}
-			{exp:low_title:category category_id="C24"}
-			{exp:low_title:category url_title="{segment_4}" category_group="1"}
-			{exp:low_title:category url_title="{segment_3}" custom_field="title_{language}"}
-			{exp:low_title:category url_title="{segment_3}" custom_field="title_{language}" fallback="yes"}
-
-			{exp:low_title:channel channel_id="3"}
-			{exp:low_title:channel channel_name="{segment_1}" format="no"}
-
-			{exp:low_title:site site_id="1"}
-			{exp:low_title:site site_name="{segment_1}"}
-		<?php
-		$buffer = ob_get_contents();
-
-		ob_end_clean();
-
-		return $buffer;
-	}
 
 	// --------------------------------------------------------------------
 
