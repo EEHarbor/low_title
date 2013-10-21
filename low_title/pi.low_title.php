@@ -2,11 +2,11 @@
 
 $plugin_info = array(
 	'pi_name'        => 'Low Title',
-	'pi_version'     => '2.1.1',
+	'pi_version'     => '2.1.2',
 	'pi_author'      => 'Lodewijk Schutte ~ Low',
-	'pi_author_url'  => 'http://gotolow.com/software/low-title',
+	'pi_author_url'  => 'http://gotolow.com/addons/low-title',
 	'pi_description' => 'Plugin to quickly retrieve a title from an entry, category, channel or site',
-	'pi_usage'       => 'See http://gotolow.com/software/low-title for more info'
+	'pi_usage'       => 'See http://gotolow.com/addons/low-title for more info'
 );
 
 /**
@@ -27,7 +27,7 @@ if ( ! function_exists('ee'))
  *
  * @package        low_title
  * @author         Lodewijk Schutte ~ Low <hi@gotolow.com>
- * @link           http://gotolow.com/software/low-title
+ * @link           http://gotolow.com/addons/low-title
  * @license        http://creativecommons.org/licenses/by-sa/3.0/
  */
 class Low_title {
