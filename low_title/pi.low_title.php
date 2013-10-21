@@ -94,16 +94,11 @@ class Low_title {
 
 		if ($params['custom_field'])
 		{
-			ee()->db->select('field_id');
-			ee()->db->from('exp_channel_fields');
-			ee()->db->where('field_name', $params['custom_field']);
-			$query = ee()->db->get();
-
-			if ($query->num_rows())
+			if ($field_id = $this->_get_channel_field_id($params['custom_field']))
 			{
-				$row = $query->row();
-				$field_id = $row->field_id;
-				$sql_select = (($params['fallback'] == 'yes') ? "IF(d.field_id_{$field_id}='',t.title,d.field_id_{$field_id})" : "d.field_id_{$field_id}") . " AS title";
+				$sql_select = (($params['fallback'] == 'yes')
+					? "IF(d.field_id_{$field_id}='',t.title,d.field_id_{$field_id})"
+					: "d.field_id_{$field_id}") . " AS title";
 			}
 			else
 			{
@@ -259,16 +254,11 @@ class Low_title {
 
 		if ($params['custom_field'])
 		{
-			ee()->db->select('field_id');
-			ee()->db->from('exp_category_fields');
-			ee()->db->where('field_name', $params['custom_field']);
-			$query = ee()->db->get();
-
-			if ($query->num_rows())
+			if ($field_id = $this->_get_category_field_id($params['custom_field']))
 			{
-				$row = $query->row();
-				$field_id = $row->field_id;
-				$sql_select = (($params['fallback'] == 'yes') ? "IF(d.field_id_{$field_id}='',c.cat_name,d.field_id_{$field_id})" : "d.field_id_{$field_id}");
+				$sql_select = (($params['fallback'] == 'yes')
+					? "IF(d.field_id_{$field_id}='',c.cat_name,d.field_id_{$field_id})"
+					: "d.field_id_{$field_id}");
 			}
 			else
 			{
@@ -285,7 +275,7 @@ class Low_title {
 		//  Start composing query
 		// -------------------------------------
 
-		ee()->db->select(($field_id ? "d.field_id_{$field_id}" : 'cat_name').' AS title', FALSE);
+		ee()->db->select($sql_select.' AS title', FALSE);
 		ee()->db->from('exp_categories AS c');
 
 		// extra join if needed
@@ -297,7 +287,7 @@ class Low_title {
 		// sql for category_id
 		if ($params['category_id'])
 		{
-			ee()->db->where('c.cat_id', $params['category_id']);
+			ee()->db->where('c.cat_id', ltrim($params['category_id'], 'C'));
 		}
 
 		// sql for url_title
@@ -535,8 +525,54 @@ class Low_title {
 		$this->return_data = ee()->typography->format_characters($this->return_data);
 	}
 
-
 	// --------------------------------------------------------------------
+
+
+	/**
+	 * Get custom channel field id
+	 *
+	 * @access	private
+	 * @return	void
+	 */
+	private function _get_channel_field_id($name)
+	{
+		static $map = array();
+
+		if ( ! array_key_exists($name, $map))
+		{
+			$query = ee()->db->select('field_id')
+			       ->from('channel_fields')
+			       ->where('field_name', $name)
+			       ->get();
+
+			$map[$name] = $query->row('field_id');
+		}
+
+		return $map[$name];
+	}
+
+	/**
+	 * Get custom category field id
+	 *
+	 * @access	private
+	 * @return	void
+	 */
+	private function _get_category_field_id($name)
+	{
+		static $map = array();
+
+		if ( ! array_key_exists($name, $map))
+		{
+			$query = ee()->db->select('field_id')
+			       ->from('category_fields')
+			       ->where('field_name', $name)
+			       ->get();
+
+			$map[$name] = $query->row('field_id');
+		}
+
+		return $map[$name];
+	}
 
 }
 // END CLASS
