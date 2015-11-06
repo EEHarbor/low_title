@@ -1,27 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$plugin_info = array(
-	'pi_name'        => 'Low Title',
-	'pi_version'     => '2.1.2',
-	'pi_author'      => 'Lodewijk Schutte ~ Low',
-	'pi_author_url'  => 'http://gotolow.com/addons/low-title',
-	'pi_description' => 'Plugin to quickly retrieve a title from an entry, category, channel or site',
-	'pi_usage'       => 'See http://gotolow.com/addons/low-title for more info'
-);
-
-/**
- * < EE 2.6.0 backward compat
- */
-if ( ! function_exists('ee'))
-{
-	function ee()
-	{
-		static $EE;
-		if ( ! $EE) $EE = get_instance();
-		return $EE;
-	}
-}
-
 /**
  * Low Title Plugin Class
  *
@@ -48,8 +26,6 @@ class Low_title {
 		$params = array(
 			'entry_id'     => '',
 			'url_title'    => '',
-			'weblog_id'    => '',
-			'weblog'       => '',
 			'custom_field' => '',
 			'channel_id'   => '',
 			'channel'      => '',
@@ -65,27 +41,9 @@ class Low_title {
 		//  Loop through parameters, set value
 		// -------------------------------------
 
-		foreach ($params AS $key => $value)
+		foreach ($params as $key => $value)
 		{
 			$params[$key] = ee()->TMPL->fetch_param($key);
-		}
-
-		// -------------------------------------
-		//  Convert 'weblog_id' to 'channel_id'
-		// -------------------------------------
-
-		if ( !$params['channel_id'] && $params['weblog_id'] )
-		{
-			$params['channel_id'] = $params['weblog_id'];
-		}
-
-		// -------------------------------------
-		//  Convert 'weblog' to 'channel'
-		// -------------------------------------
-
-		if ( !$params['channel'] && $params['weblog'] )
-		{
-			$params['channel'] = $params['weblog'];
 		}
 
 		// -------------------------------------
@@ -105,8 +63,7 @@ class Low_title {
 				if ($params['show_error'] == 'yes')
 				{
 					// Show error if no custom field was found
-					$this->return_data = "Custom field '{$params['custom_field']}' not found";
-					return $this->return_data;
+					return "Custom field '{$params['custom_field']}' not found";
 				}
 			}
 		}
@@ -181,8 +138,7 @@ class Low_title {
 				if ($params['show_error'] == 'yes')
 				{
 					// Show error if no custom field was found
-					$this->return_data = "Pages URI '{$params['pages_uri']}' not found";
-					return $this->return_data;
+					return "Pages URI '{$params['pages_uri']}' not found";
 				}
 			}
 		}
@@ -207,7 +163,9 @@ class Low_title {
 		{
 			$this->return_data = '';
 		}
+
 		ee()->TMPL->log_item("Low Title, returning ".$this->return_data);
+
 		return $this->return_data;
 	}
 
@@ -343,8 +301,6 @@ class Low_title {
 		// -------------------------------------
 
 		$params = array(
-			'weblog_id'		=> '',
-			'weblog_name'	=> '',
 			'channel_id'	=> '',
 			'channel_name'	=> ''
 		);
@@ -356,24 +312,6 @@ class Low_title {
 		foreach ($params AS $key => $value)
 		{
 			$params[$key] = ee()->TMPL->fetch_param($key);
-		}
-
-		// -------------------------------------
-		//  Convert 'weblog_id' to 'channel_id'
-		// -------------------------------------
-
-		if ( !$params['channel_id'] && $params['weblog_id'] )
-		{
-			$params['channel_id'] = $params['weblog_id'];
-		}
-
-		// -------------------------------------
-		//  Convert 'weblog_name' to 'channel_name'
-		// -------------------------------------
-
-		if ( !$params['channel_name'] && $params['weblog_name'] )
-		{
-			$params['channel_name'] = $params['weblog_name'];
 		}
 
 		// -------------------------------------
@@ -417,20 +355,6 @@ class Low_title {
 		}
 
 		return $this->return_data;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Weblog
-	 *
-	 * Alias for Channel
-	 *
-	 * @see		channel()
-	 */
-	public function weblog()
-	{
-		return $this->channel();
 	}
 
 	// --------------------------------------------------------------------
