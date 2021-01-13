@@ -10,7 +10,11 @@
  * @link           http://gotolow.com/addons/low-title
  * @license        http://creativecommons.org/licenses/by-sa/3.0/
  */
-class Low_title
+
+include_once "addon.setup.php";
+use Low\Title\FluxCapacitor\Base\Pi;
+
+class Low_title extends Pi
 {
 
     /**
@@ -18,7 +22,7 @@ class Low_title
      *
      * Get title for entry
      *
-     * @return	string
+     * @return  string
      */
     public function entry()
     {
@@ -159,8 +163,8 @@ class Low_title
      *
      * Get title for category
      *
-     * @access	public
-     * @return	string
+     * @access  public
+     * @return  string
      */
     public function category()
     {
@@ -169,12 +173,12 @@ class Low_title
         // -------------------------------------
 
         $params = array(
-            'category_id'	=> '',
-            'url_title'		=> '',
+            'category_id'   => '',
+            'url_title'     => '',
             'category_group'=> '',
-            'custom_field'	=> '',
-            'show_error'	=> '',
-            'fallback'		=> ''
+            'custom_field'  => '',
+            'show_error'    => '',
+            'fallback'      => ''
         );
 
         $field_id = false;
@@ -261,8 +265,8 @@ class Low_title
      *
      * Get title for channel
      *
-     * @access	public
-     * @return	string
+     * @access  public
+     * @return  string
      */
     public function channel()
     {
@@ -271,8 +275,8 @@ class Low_title
         // -------------------------------------
 
         $params = array(
-            'channel_id'	=> '',
-            'channel_name'	=> ''
+            'channel_id'    => '',
+            'channel_name'  => ''
         );
 
         // -------------------------------------
@@ -328,8 +332,8 @@ class Low_title
      *
      * Get title for site
      *
-     * @access	public
-     * @return	string
+     * @access  public
+     * @return  string
      */
     public function site()
     {
@@ -338,8 +342,8 @@ class Low_title
         // -------------------------------------
 
         $params = array(
-            'site_id'	=> '',
-            'site_name'	=> ''
+            'site_id'   => '',
+            'site_name' => ''
         );
 
         // -------------------------------------
@@ -395,8 +399,8 @@ class Low_title
      *
      * Format return data
      *
-     * @access	private
-     * @return	void
+     * @access  private
+     * @return  void
      */
     private function _format()
     {
@@ -415,8 +419,8 @@ class Low_title
     /**
      * Get custom channel field id
      *
-     * @access	private
-     * @return	void
+     * @access  private
+     * @return  void
      */
     private function _get_channel_field_id($name)
     {
@@ -437,8 +441,8 @@ class Low_title
     /**
      * Get custom category field id
      *
-     * @access	private
-     * @return	void
+     * @access  private
+     * @return  void
      */
     private function _get_category_field_id($name)
     {
