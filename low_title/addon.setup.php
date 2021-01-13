@@ -10,11 +10,11 @@
  */
 
 return array(
-	'author'      => 'Low',
-	'author_url'  => 'http://gotolow.com/',
-	'docs_url'    => 'http://gotolow.com/addons/low-title',
-	'name'        => 'Low Title',
-	'description' => 'Quickly retrieve a title from an entry, category, channel or site',
-	'version'     => '3.0.0',
-	'namespace'   => 'Low\Title'
+    'author'      => 'Low',
+    'author_url'  => 'http://gotolow.com/',
+    'docs_url'    => 'http://gotolow.com/addons/low-title',
+    'name'        => 'Low Title',
+    'description' => 'Quickly retrieve a title from an entry, category, channel or site',
+    'version'     => '3.0.0',
+    'namespace'   => 'Low\Title'
 );
