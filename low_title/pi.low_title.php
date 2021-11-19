@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -151,7 +153,7 @@ class Low_title extends Pi
             $this->return_data = '';
         }
 
-        ee()->TMPL->log_item("Low Title, returning ".$this->return_data);
+        ee()->TMPL->log_item("Low Title, returning " . $this->return_data);
 
         return $this->return_data;
     }
@@ -175,7 +177,7 @@ class Low_title extends Pi
         $params = array(
             'category_id'   => '',
             'url_title'     => '',
-            'category_group'=> '',
+            'category_group' => '',
             'custom_field'  => '',
             'show_error'    => '',
             'fallback'      => ''
@@ -214,7 +216,7 @@ class Low_title extends Pi
         //  Start composing query
         // -------------------------------------
 
-        ee()->db->select($sql_select.' AS title', false);
+        ee()->db->select($sql_select . ' AS title', false);
         ee()->db->from('exp_categories AS c');
 
         // extra join if needed
