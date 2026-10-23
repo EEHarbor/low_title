@@ -1,0 +1,5 @@
+/tests/.phpunit/*.phar
+/tests/.source/
+/tests/reports/*
+!/tests/reports/.gitkeep
+/.phpunit.result.cache
