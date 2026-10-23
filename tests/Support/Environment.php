@@ -397,22 +397,17 @@ class Environment extends \stdClass
     }
 
     /**
-     * Reject source/harness diagnostics, including @, while respecting PHPUnit's internal probes.
+     * Reject every source, support and tooling diagnostic, including suppressed ones.
      *
      * @param int $severity
      * @param string $message
      * @param string $file
      * @param int $line
-     * @return false
+     * @return void
      * @throws ErrorException
      */
     public static function diagnostic($severity, $message, $file, $line)
     {
-        $tooling = strpos($file, '/tests/.phpunit/phpunit-') !== false || (defined('__PHPUNIT_PHAR_ROOT__') && strpos($file, __PHPUNIT_PHAR_ROOT__ . '/') === 0);
-        if ($tooling && !(error_reporting() & $severity)) {
-            return false;
-        }
-
         throw new ErrorException($message, 0, $severity, $file, $line);
     }
 }

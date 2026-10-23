@@ -1,6 +1,9 @@
 <?php
 
 error_reporting(E_ALL);
+set_error_handler(static function ($severity, $message, $file, $line) {
+    throw new \ErrorException($message, 0, $severity, $file, $line);
+}, E_ALL);
 ini_set('display_errors', 'stderr');
 $case = $argv[1];
 if ($case === 'bridge-version') {

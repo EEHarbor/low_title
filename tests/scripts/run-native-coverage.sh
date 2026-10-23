@@ -29,6 +29,10 @@ while IFS='|' read -r label request ee_version case_name; do
     if [[ "$case_name" == restricted-opcache-api ]]; then
         flags+=(-d "opcache.restrict_api=$temp_dir")
     fi
+    if [[ "$label" == navigation-* ]]; then
+        script="$root/tests/scripts/navigation-probe.php"
+        arguments+=("$temp_dir")
+    fi
     if [[ "$label" == pagination-* ]]; then
         script="$root/tests/scripts/pagination-probe.php"
     fi
@@ -100,6 +104,11 @@ session-tmp-readonly|PAGE|7.5.0|tmp-readonly
 session-missing|PAGE|7.5.0|missing
 session-file|PAGE|7.5.0|file
 session-empty|PAGE|7.5.0|empty
+navigation-cold-provider|CP|7.5.0|cold-provider
+navigation-modern|CP|7.5.0|modern
+navigation-legacy|CP|2.5.0|legacy
+navigation-http-route|CP|7.5.0|http-route
+navigation-native-properties|CP|7.5.0|native-properties
 CONTEXTS
 python3 "$root/tests/scripts/render-native-coverage.py" "$report_dir" "$report_dir/summary.md"
 exit "$status"

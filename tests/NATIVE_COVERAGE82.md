@@ -79,11 +79,102 @@ Production baseline: `e3e13533ab0e67d13cdd16bedc0e377fa13910f0`. These fresh pro
 | `session-file` | None / None | 8.2.30 / 3.5.3 | 0 | `@stub::tmpdir` | 3/9 | 3/14 | 2/19 | 199, 200, 202, 203, 205, 210 |
 | `session-empty` | None / None | 8.2.30 / 3.5.3 | 0 | `@stub::go` | 21/50 | 16/35 | 15/53 | 131, 132, 139, 141, 146, 148, 157, 161, 164, 165, 166, 167, 168, 170, 171, 172, 173, 175, 176, 177, 178, 180, 181, 183, 184, 189, 191, 192, 194 |
 | `session-empty` | None / None | 8.2.30 / 3.5.3 | 0 | `@stub::tmpdir` | 3/9 | 3/14 | 2/19 | 199, 200, 202, 203, 205, 210 |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::{main}` | 2/2 | 1/1 | 0/1 | none |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::__construct` | 13/14 | 6/7 | 5/10 | 46 |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::generateNav` | 7/8 | 2/3 | 1/4 | 66 |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::formatItems` | 10/17 | 7/21 | 6/31 | 81, 82, 84, 92, 93, 95, 106 |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::itemsToNav` | 3/6 | 3/6 | 2/9 | 117, 120, 121 |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::buttonsToItems` | 2/4 | 3/7 | 2/11 | 130, 131 |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::setActive` | 3/9 | 3/5 | 2/7 | 143, 146, 150, 156, 157, 161 |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::setBreadcrumb` | 2/4 | 2/3 | 1/4 | 168, 169 |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::getActiveItem` | 1/1 | 1/1 | 0/0 | none |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::deferGenerate` | 1/1 | 1/1 | 0/0 | none |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::preGenerateNav` | 1/1 | 1/1 | 0/1 | none |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::postGenerateNav` | 1/1 | 1/1 | 0/1 | none |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::getUrl` | 0/6 | 0/6 | 0/7 | 214, 215, 218, 219, 221, 224 |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::defaultItems` | 1/1 | 1/1 | 0/0 | none |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::defaultButtons` | 1/1 | 1/1 | 0/0 | none |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::defaultActiveMap` | 1/1 | 1/1 | 0/0 | none |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::setToolbarIcon` | 0/7 | 0/3 | 0/4 | 244, 245, 248, 249, 252, 253, 257 |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Base/Mcp::__construct` | 5/5 | 3/3 | 2/4 | none |
+| `navigation-cold-provider` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Base/Mcp::canIncludeNav` | 5/6 | 7/8 | 6/11 | 193 |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::{main}` | 2/2 | 1/1 | 0/1 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::__construct` | 13/14 | 6/7 | 7/10 | 46 |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::generateNav` | 7/8 | 2/3 | 1/4 | 66 |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::formatItems` | 17/17 | 21/21 | 28/31 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::itemsToNav` | 6/6 | 6/6 | 7/9 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::buttonsToItems` | 4/4 | 7/7 | 8/11 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::setActive` | 9/9 | 5/5 | 6/7 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::setBreadcrumb` | 4/4 | 3/3 | 3/4 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::getActiveItem` | 1/1 | 1/1 | 0/0 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::deferGenerate` | 1/1 | 1/1 | 0/0 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::preGenerateNav` | 1/1 | 1/1 | 0/1 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::postGenerateNav` | 1/1 | 1/1 | 0/1 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::getUrl` | 6/6 | 6/6 | 7/7 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::defaultItems` | 1/1 | 1/1 | 0/0 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::defaultButtons` | 1/1 | 1/1 | 0/0 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::defaultActiveMap` | 1/1 | 1/1 | 0/0 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::setToolbarIcon` | 7/7 | 3/3 | 3/4 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Base/Mcp::__construct` | 5/5 | 3/3 | 2/4 | none |
+| `navigation-modern` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Base/Mcp::canIncludeNav` | 5/6 | 7/8 | 6/11 | 193 |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::{main}` | 2/2 | 1/1 | 0/1 | none |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::__construct` | 13/14 | 5/7 | 4/10 | 46 |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::generateNav` | 2/8 | 2/3 | 1/4 | 69, 70, 71, 72, 73, 74 |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::formatItems` | 14/17 | 15/21 | 16/31 | 92, 93, 95 |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::itemsToNav` | 0/6 | 0/6 | 0/9 | 113, 116, 117, 120, 121, 124 |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::buttonsToItems` | 0/4 | 0/7 | 0/11 | 129, 130, 131, 134 |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::setActive` | 0/9 | 0/5 | 0/7 | 140, 143, 146, 150, 155, 156, 157, 161, 163 |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::setBreadcrumb` | 0/4 | 0/3 | 0/4 | 167, 168, 169, 171 |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::getActiveItem` | 1/1 | 1/1 | 0/0 | none |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::deferGenerate` | 0/1 | 0/1 | 0/0 | 180 |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::preGenerateNav` | 0/1 | 0/1 | 0/1 | 185 |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::postGenerateNav` | 0/1 | 0/1 | 0/1 | 189 |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::getUrl` | 0/6 | 0/6 | 0/7 | 214, 215, 218, 219, 221, 224 |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::defaultItems` | 0/1 | 0/1 | 0/0 | 229 |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::defaultButtons` | 0/1 | 0/1 | 0/0 | 234 |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::defaultActiveMap` | 0/1 | 0/1 | 0/0 | 239 |
+| `navigation-legacy` | CP / 2.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::setToolbarIcon` | 0/7 | 0/3 | 0/4 | 244, 245, 248, 249, 252, 253, 257 |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::{main}` | 2/2 | 1/1 | 0/1 | none |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::__construct` | 13/14 | 6/7 | 5/10 | 46 |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::generateNav` | 7/8 | 2/3 | 1/4 | 66 |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::formatItems` | 10/17 | 7/21 | 6/31 | 81, 82, 84, 92, 93, 95, 106 |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::itemsToNav` | 3/6 | 3/6 | 2/9 | 117, 120, 121 |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::buttonsToItems` | 2/4 | 3/7 | 2/11 | 130, 131 |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::setActive` | 3/9 | 3/5 | 2/7 | 143, 146, 150, 156, 157, 161 |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::setBreadcrumb` | 2/4 | 2/3 | 1/4 | 168, 169 |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::getActiveItem` | 0/1 | 0/1 | 0/0 | 175 |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::deferGenerate` | 1/1 | 1/1 | 0/0 | none |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::preGenerateNav` | 1/1 | 1/1 | 0/1 | none |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::postGenerateNav` | 1/1 | 1/1 | 0/1 | none |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::getUrl` | 4/6 | 4/6 | 3/7 | 215, 219 |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::defaultItems` | 1/1 | 1/1 | 0/0 | none |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::defaultButtons` | 1/1 | 1/1 | 0/0 | none |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::defaultActiveMap` | 1/1 | 1/1 | 0/0 | none |
+| `navigation-http-route` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 0 | `Conduit/McpNav::setToolbarIcon` | 0/7 | 0/3 | 0/4 | 244, 245, 248, 249, 252, 253, 257 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::{main}` | 2/2 | 1/1 | 0/1 | none |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::__construct` | 1/14 | 1/7 | 0/10 | 34, 35, 37, 40, 41, 42, 45, 46, 50, 53, 54, 55, 57 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::generateNav` | 0/8 | 0/3 | 0/4 | 65, 66, 69, 70, 71, 72, 73, 74 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::formatItems` | 0/17 | 0/21 | 0/31 | 79, 80, 81, 82, 84, 87, 90, 91, 92, 93, 95, 98, 102, 103, 105, 106, 108 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::itemsToNav` | 0/6 | 0/6 | 0/9 | 113, 116, 117, 120, 121, 124 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::buttonsToItems` | 0/4 | 0/7 | 0/11 | 129, 130, 131, 134 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::setActive` | 0/9 | 0/5 | 0/7 | 140, 143, 146, 150, 155, 156, 157, 161, 163 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::setBreadcrumb` | 0/4 | 0/3 | 0/4 | 167, 168, 169, 171 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::getActiveItem` | 0/1 | 0/1 | 0/0 | 175 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::deferGenerate` | 0/1 | 0/1 | 0/0 | 180 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::preGenerateNav` | 0/1 | 0/1 | 0/1 | 185 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::postGenerateNav` | 0/1 | 0/1 | 0/1 | 189 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::getUrl` | 0/6 | 0/6 | 0/7 | 214, 215, 218, 219, 221, 224 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::defaultItems` | 0/1 | 0/1 | 0/0 | 229 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::defaultButtons` | 0/1 | 0/1 | 0/0 | 234 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::defaultActiveMap` | 0/1 | 0/1 | 0/0 | 239 |
+| `navigation-native-properties` | CP / 7.5.0 | 8.2.30 / 3.5.3 | 1 | `Conduit/McpNav::setToolbarIcon` | 0/7 | 0/3 | 0/4 | 244, 245, 248, 249, 252, 253, 257 |
 
-Raw JSON, retained out/out_hit graphs, stdout/stderr, exit status, and the generated summary are stored in the unique native report directory. The checksum rejection intentionally terminates with its diagnostic and legacy exit status 0. Size and truncated-stream contexts exit 1 because the shipped size-error expression reads undefined $stat at stub line 262; strict diagnostics remain visible. The measured Xdebug 3.1.6 and 3.5.3 contexts attribute conditional Bridge/EE constructor graphs to the first declaration; Reflection identifies the actual runtime method. Mismatched graph ranges remain preserved in the raw/normalized report and have unknown per-method branch metrics above. Uninstrumented native contexts remain unknown. The absent optional add-on navigation class keeps its successful-inclusion paths unavailable; source diagnostics still stop native constructors on PHP >= 8.2 in the complete matrix.
+Raw JSON, retained out/out_hit graphs, stdout/stderr, exit status, and the generated summary are stored in the unique native report directory. The checksum rejection intentionally terminates with its diagnostic and legacy exit status 0. Size and truncated-stream contexts exit 1 because the shipped size-error expression reads undefined $stat at stub line 262; strict diagnostics remain visible. The measured Xdebug 3.1.6 and 3.5.3 contexts attribute conditional Bridge/EE constructor graphs to the first declaration; Reflection identifies the actual runtime method. Mismatched graph ranges remain preserved in the raw/normalized report and have unknown per-method branch metrics above. Uninstrumented native contexts remain unknown. Default loading without an optional add-on navigation class remains a source diagnostic, while the separate provider contexts below execute supported inclusion paths. Native source diagnostics remain ordinary failures in the complete matrix.
 
 Loading probes omit bootstrap-owned `ee()` and fieldtype parent declarations. The legacy contexts use EE2.5 and verify the shipped `get_instance()` fallback plus configured/predefined version precedence. Fieldtype paths receive a byte-identical copy of the existing bounded `Support/Fieldtype.php` contract; these are native add-on loader checks, not full EE-core integration. Their procedural rows select source lines outside inventoried method ranges. Xdebug zero-hit procedural graphs alongside executed lines remain unknown branch metrics, with raw counters preserved. The installer-ancestor case exits 1 because global replacement at Ft line 13 also changes the ancestor directory, preventing the parent load at line 35. Every context removes its unique fixture files before reporting.
 
 Autoloader probes report the actual availability of opcache_get_configuration. The configured PHP 7.4 runtime has no opcode-cache API, so its opcache flag case exercises the supported fallback; PHP 8.2 separately measures the available API and validate_permission query-string branch. The disabled-API case uses only command-local configuration. A restricted API raises the source warning at autoload line 77 on runtimes where the API exists. Full extraction still stops on its strict mkdir diagnostic. Pagination probes join the declared-property behavior subject to the actual bridge and typed bounded CP/Pagination collaborator. A global call with its default null URL forwards an empty string, violating the real render(Url) contract; its type-boundary error retains the shipped caller trace. Controller/default and global/explicit URL controls pass. Every raw context remains separate, including different runtimes.
 
 Session fallback probes first verify that the actual PHP files handler accepts each valid configured path and creates its owned mode-0600 session file. The three-part N;MODE;/path form is valid PHP configuration, but this stub strips only the first separator and terminates at line 159. An empty session.save_path also accepts the owned sys_temp_dir through the real files handler, yet the stub rejects it instead of using that default. Its legacy exit status 0 and verbatim output remain in the JSON alongside returned=false; the ordinary valid-path test remains red. Plain/depth and read-only-temp fallback reach the existing mkdir warning. A writable file as TMPDIR reaches a distinct line-167 Not a directory diagnostic despite a valid session fallback. Missing and file-valued session locations intentionally reject with the preserved diagnostic. The valid empty-default case remains an ordinary red regression with its native default-directory proof. Shutdown cleanup captures output and restores owned directory permissions even after source die(); parent cleanup remains independent. No session native graph is merged with other contexts.
+
+Optional navigation uses an ordinary extension-provider file in a unique owned installation linking to the original PHAR and metadata. A cold controller context discovers that file through canIncludeNav; the modern scenario context preloads it before exercising configured hooks. Behavior providers declare flux, and the MCP behavior subject declares its version/nav slots, allowing ordinary algorithms without hiding native diagnostics. A separate provider subclass leaves flux undeclared and retains the original line-32 PHP 8.2+ regression. The internal controller route containing http is observed as the original wrong raw string; its PHPUnit assertion remains red even though the observation probe exits 0. Modern/legacy/native compatibility contexts and runtimes remain separate. URL/header/sidebar/breadcrumb collaborators match 22 actual-core values on all seven runtimes; route formatting, view/CP constructor dependencies and full HTML/application integration remain bounded. The five navigation PHPUnit cases assert the original PHAR hash, source/provider Reflection filenames and owned cleanup without following symlinks. FluxCapacitor::L remains false, leaving license injection unavailable.

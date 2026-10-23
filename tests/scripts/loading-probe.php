@@ -1,6 +1,9 @@
 <?php
 
 error_reporting(E_ALL);
+set_error_handler(static function ($severity, $message, $file, $line) {
+    throw new \ErrorException($message, 0, $severity, $file, $line);
+}, E_ALL);
 $case = $argv[1];
 $directory = $argv[2];
 $root = dirname(__DIR__, 2);

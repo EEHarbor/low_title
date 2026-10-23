@@ -309,7 +309,7 @@ Procedural units are identified in `source-inventory.json`; class-only units hav
 
 ## Remaining constraints
 
-- Archived `Conduit/McpNav.php` cannot load under strict diagnostics: line 7 includes an absent loose `Conduit/McpNav.php` under `@`. Its methods remain unexecuted; source is not invented or suppressed to bypass this.
+- Default archived `Conduit/McpNav.php` loading still warns at line 7 for an absent optional provider under `@`. Separate owned ordinary-provider contexts execute navigation methods without merging their graphs into this parent. Native undeclared flux at line 32 and incorrect internal-http routing remain ordinary source regressions.
 - `Base/Pi::info()` fails immediately by using `$this` statically. Its later lines require a source fix.
 - `Base/Upd::update()` reaches the absent optional `ext.low_title.php`; the required diagnostic blocks subsequent success/catch paths.
 - Cache creation emits an `@mkdir` warning before later logging/false-return lines when a file occupies a directory path. Both source regressions are retained.
