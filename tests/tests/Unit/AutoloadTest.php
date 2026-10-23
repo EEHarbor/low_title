@@ -11,7 +11,7 @@ class AutoloadTest extends TestCase
      */
     public static function loaders()
     {
-        return array(array('unrelated'), array('sibling-namespace'), array('missing-archive'), array('missing-class'), array('native'), array('opcache'), array('extraction'));
+        return array(array('unrelated'), array('sibling-namespace'), array('missing-archive'), array('missing-class'), array('native'), array('opcache'), array('extraction'), array('no-opcache-api'), array('restricted-opcache-api'));
     }
 
     /**
@@ -26,7 +26,14 @@ class AutoloadTest extends TestCase
         $directory = sys_get_temp_dir() . '/low-title-loader-' . getmypid() . '-' . bin2hex(random_bytes(6));
         mkdir($directory);
         $root = dirname(__DIR__, 3);
-        $command = array(PHP_BINARY, '-d', 'error_reporting=-1', '-d', 'display_errors=stderr', '-d', 'xdebug.mode=off', '-d', 'sys_temp_dir=' . $directory, '-d', 'opcache.enable_cli=' . ($case === 'opcache' ? '1' : '0'), '-d', 'opcache.validate_permission=' . ($case === 'opcache' ? '1' : '0'), $root . '/tests/scripts/autoload-probe.php', $case, $directory);
+        $command = array(PHP_BINARY, '-d', 'error_reporting=-1', '-d', 'display_errors=stderr', '-d', 'xdebug.mode=off', '-d', 'sys_temp_dir=' . $directory, '-d', 'opcache.enable_cli=' . (in_array($case, array('opcache', 'restricted-opcache-api'), true) ? '1' : '0'), '-d', 'opcache.validate_permission=' . ($case === 'opcache' ? '1' : '0'));
+        if ($case === 'no-opcache-api') {
+            $command = array_merge($command, array('-d', 'disable_functions=opcache_get_configuration'));
+        }
+        if ($case === 'restricted-opcache-api') {
+            $command = array_merge($command, array('-d', 'opcache.restrict_api=' . $directory));
+        }
+        $command = array_merge($command, array($root . '/tests/scripts/autoload-probe.php', $case, $directory));
         try {
             $process = Process::run($command, $root, array_merge($_ENV, array('LOW_TITLE_COVERAGE_SOURCE' => '', 'LOW_TITLE_BRANCH_REPORT' => '', 'TMPDIR' => $directory)));
             $stdout = $process['stdout'];
@@ -36,6 +43,8 @@ class AutoloadTest extends TestCase
             if (!is_array($result)) {
                 $this->fail('The loader probe returned no JSON result: ' . $stdout . $stderr);
             }
+            $this->assertSame($case !== 'no-opcache-api' && function_exists('opcache_get_configuration'), $result['opcache_api']);
+            unset($result['opcache_api']);
             if ($case === 'extraction') {
                 $this->assertSame($directory, $result['environment_tmpdir']);
                 $this->assertSame($directory . '/pharextract/low_title', $result['extraction_directory']);

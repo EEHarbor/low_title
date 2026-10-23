@@ -26,6 +26,11 @@ for case in ['legacy-config', 'legacy-defined']:
     targets['loading-' + case] = [('Bridge/EE', 'ee'), ('Bridge/EE', '__construct')]
 for case in ['system', 'app', 'priority', 'defined-version', 'installer', 'installer-ancestor', 'predeclared']:
     targets['loading-fieldtype-' + case] = [('Base/Ft', '{main}')]
+for case in ['unrelated', 'sibling-namespace', 'missing-archive', 'missing-class', 'native', 'opcache', 'extraction', 'no-opcache-api', 'restricted-opcache-api']:
+    targets['autoload-' + case] = [('@autoload', '{closure}')]
+targets['autoload-extraction'] += [('@stub', 'go'), ('@stub', '_unpack'), ('@stub', 'tmpdir'), ('@stub', '_removeTmpFiles')]
+for case in ['named-default', 'global-explicit', 'global-default']:
+    targets['pagination-' + case] = [('Base/Mcp', 'paginateModel'), ('Bridge/EE5', 'moduleURL'), ('Bridge/EE5', 'pagination')]
 lines = ['# Native coverage contexts', '', f"Production baseline: `{inventory['baseline']}`. These fresh processes load the shipped PHAR with explicit EE versions, request contexts, and strict E_ALL diagnostics. Uninstall behavior uses a declared-property subject; unmodified constructors retain separate compatibility regressions. Each context remains independent of the parent suite and every other native graph. No counts below are added to parent coverage or used to close a source unit.", '', '| Context | REQ / EE | PHP / Xdebug | Process exit | Method | Lines hit / executable | Blocks hit / total | Exits hit / total | Uncovered lines |', '|---|---|---|---:|---|---:|---:|---:|---|']
 for context, methods in targets.items():
     raw = json.loads((reports / f'{context}.raw.json').read_text())
@@ -34,7 +39,11 @@ for context, methods in targets.items():
     for member, name in methods:
         relative = None
         origin = 'low_title/low_title.phar#stub'
-        if member != '@stub':
+        physical = root / 'low_title/low_title.phar'
+        if member == '@autoload':
+            origin = 'low_title/autoload.php'
+            physical = root / origin
+        if member not in ['@stub', '@autoload']:
             relative = 'index.php' if member == '@index' else 'FluxCapacitor/' + member + '.php'
             origin = 'low_title/low_title.phar/' + relative
         graphs = [item for item in summary['methods'] if item['file'] == origin and (item['function'] == name or item['function'].endswith('->' + name) or name == '{closure}' and '{closure:' in item['function'])]
@@ -46,7 +55,7 @@ for context, methods in targets.items():
         method = declarations[0] if len(declarations) == 1 else None
         if graph is not None and graph.get('attribution_matches') is False:
             graph = None
-        source = raw['files'].get(str(root / 'low_title/low_title.phar'))
+        source = raw['files'].get(str(physical))
         if relative is not None:
             source = next((item for path, item in raw['files'].items() if path.endswith('/' + relative)), None)
         covered = None if source is None or method is None else {int(line): count for line, count in source['lines'].items() if method['line'] <= int(line) <= method['end_line'] and count >= -1}
@@ -62,6 +71,7 @@ for context, methods in targets.items():
         request = raw['context']['request']
         version = raw['context']['ee_version']
         lines.append(f"| `{context}` | {request} / {version} | {raw['runtime']} / {raw['xdebug']} | {exit_code} | `{member}::{name}` | {line_counts} | {blocks} | {exits} | {missing} |")
-lines += ['', 'Raw JSON, retained out/out_hit graphs, stdout/stderr, exit status, and the generated summary are stored in the unique native report directory. The checksum rejection intentionally terminates with its diagnostic and legacy exit status 0. Size and truncated-stream contexts exit 1 because the shipped size-error expression reads undefined $stat at stub line 262; strict diagnostics remain visible. Xdebug 3.1.6 attributes every conditional Bridge/EE constructor graph to its first declaration; Reflection identifies the actual runtime method. Mismatched graph ranges remain preserved in the raw/normalized report and have unknown per-method branch metrics above. Uninstrumented native contexts remain unknown. The absent optional add-on navigation class keeps its successful-inclusion paths unavailable; source diagnostics still stop native constructors on PHP >= 8.2 in the complete matrix.', '']
+lines += ['', 'Raw JSON, retained out/out_hit graphs, stdout/stderr, exit status, and the generated summary are stored in the unique native report directory. The checksum rejection intentionally terminates with its diagnostic and legacy exit status 0. Size and truncated-stream contexts exit 1 because the shipped size-error expression reads undefined $stat at stub line 262; strict diagnostics remain visible. The measured Xdebug 3.1.6 and 3.5.3 contexts attribute conditional Bridge/EE constructor graphs to the first declaration; Reflection identifies the actual runtime method. Mismatched graph ranges remain preserved in the raw/normalized report and have unknown per-method branch metrics above. Uninstrumented native contexts remain unknown. The absent optional add-on navigation class keeps its successful-inclusion paths unavailable; source diagnostics still stop native constructors on PHP >= 8.2 in the complete matrix.', '']
 lines += ['Loading probes omit bootstrap-owned `ee()` and fieldtype parent declarations. The legacy contexts use EE2.5 and verify the shipped `get_instance()` fallback plus configured/predefined version precedence. Fieldtype paths receive a byte-identical copy of the existing bounded `Support/Fieldtype.php` contract; these are native add-on loader checks, not full EE-core integration. Their procedural rows select source lines outside inventoried method ranges. Xdebug zero-hit procedural graphs alongside executed lines remain unknown branch metrics, with raw counters preserved. The installer-ancestor case exits 1 because global replacement at Ft line 13 also changes the ancestor directory, preventing the parent load at line 35. Every context removes its unique fixture files before reporting.', '']
+lines += ['Autoloader probes report the actual availability of opcache_get_configuration. The configured PHP 7.4 runtime has no opcode-cache API, so its opcache flag case exercises the supported fallback; PHP 8.2 separately measures the available API and validate_permission query-string branch. The disabled-API case uses only command-local configuration. A restricted API raises the source warning at autoload line 77 on runtimes where the API exists. Full extraction still stops on its strict mkdir diagnostic. Pagination probes join the declared-property behavior subject to the actual bridge and typed bounded CP/Pagination collaborator. A global call with its default null URL forwards an empty string, violating the real render(Url) contract; its type-boundary error retains the shipped caller trace. Controller/default and global/explicit URL controls pass. Every raw context remains separate, including different runtimes.', '']
 pathlib.Path(sys.argv[2]).write_text('\n'.join(lines))

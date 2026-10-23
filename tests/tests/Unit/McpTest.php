@@ -93,12 +93,14 @@ class McpTest extends TestCase
     public function testModelPagination()
     {
         $mcp = $this->mcp();
+        $mcp->flux->returns['moduleURL'] = new Url('license');
         $model = new ModelQuery;
+        $url = new Url('entries');
         $this->environment->input->getValues['page'] = '3';
-        $this->assertSame($model, $mcp->paginateModel($model, '/entries', 10, 7, 'page'));
+        $this->assertSame($model, $mcp->paginateModel($model, $url, 10, 7, 'page'));
         $this->assertSame(array(array('limit', 10), array('offset', 20)), $model->calls);
         $this->assertSame(array('pagination' => '<pagination>'), $mcp->data);
-        $this->assertContains(array('pagination', array('per_page' => 10, 'current_page' => 3, 'total_rows' => 100, 'base_url' => '/entries', 'page_links' => 7, 'page_query_string' => 'page')), $mcp->flux->calls);
+        $this->assertContains(array('pagination', array('per_page' => 10, 'current_page' => 3, 'total_rows' => 100, 'base_url' => $url, 'page_links' => 7, 'page_query_string' => 'page')), $mcp->flux->calls);
         $this->environment->input->getValues = array();
         $this->assertSame($model, $mcp->paginateModel($model));
         $this->assertSame(array('offset', 0), $model->calls[3]);

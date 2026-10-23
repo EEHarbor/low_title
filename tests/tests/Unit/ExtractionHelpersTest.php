@@ -103,6 +103,7 @@ class ExtractionHelpersTest extends TestCase
      */
     public static function payloads()
     {
+        require_once dirname(__DIR__, 3) . '/low_title/low_title.phar';
         $cases = array();
         foreach (array(0, 1, 8191, 8192, 8193, 16384, 16385) as $length) {
             foreach (array(0, \Extract_low_title::GZ, \Extract_low_title::BZ2) as $compression) {
