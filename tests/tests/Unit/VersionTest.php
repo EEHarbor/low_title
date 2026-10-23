@@ -58,7 +58,11 @@ class VersionTest extends TestCase
         $this->assertCount($calls, $this->environment->db->calls);
         $version->saveLicenseKey($data);
         $expected = $data + array('site_id' => 1, 'addon' => 'Low\\Title');
-        $this->assertContains(array($count ? 'update' : 'insert', 'eeharbor_licenses', $expected), $this->environment->db->calls);
+        $write = array(array('insert', 'eeharbor_licenses', $expected));
+        if ($count) {
+            $write = array(array('where', 'site_id', 1), array('where', 'addon', 'Low\\Title'), array('update', 'eeharbor_licenses', $expected));
+        }
+        $this->assertSame($write, array_slice($this->environment->db->calls, $calls));
         $version->deleteLicenseKey();
         $this->assertSame(array(array('where', 'site_id', 1), array('where', 'addon', 'Low\\Title'), array('delete', 'eeharbor_licenses')), array_slice($this->environment->db->calls, -3));
     }
@@ -89,46 +93,6 @@ class VersionTest extends TestCase
         $this->assertSame($key, $version->getLicenseKey());
         $this->assertSame($ignored, $version->getIgnoreSite());
         $this->assertSame(array('get', 'eeharbor_licenses', 1), $this->environment->db->calls[2]);
-    }
-
-    /**
-     * Return schema creation, missing-column, and primary-key validity cases.
-     *
-     * @return array
-     */
-    public static function schemas()
-    {
-        return array(array(false, false, array(), true), array(true, true, array(array('Column_name' => 'license_key', 'Non_unique' => '0')), false), array(true, true, array(array('Column_name' => 'site_id', 'Non_unique' => '0')), true), array(true, true, array(array('Column_name' => 'license_key', 'Non_unique' => '1')), true), array(true, true, array(array('Column_name' => 'license_key', 'Non_unique' => '0'), array('Column_name' => 'addon', 'Non_unique' => '0')), true));
-    }
-
-    /**
-     * Create missing licensing storage and recognize only its required primary key.
-     *
-     * @dataProvider schemas
-     * @param bool $tableExists
-     * @param bool $fieldExists
-     * @param array $keys
-     * @param bool $corrupt
-     * @return void
-     */
-    public function testVerifyLicenseSchema($tableExists, $fieldExists, $keys, $corrupt)
-    {
-        $version = (new \ReflectionClass(VersionSubject::class))->newInstanceWithoutConstructor();
-        $this->environment->db->tableExists = $tableExists;
-        $this->environment->db->fieldExists = $fieldExists;
-        $this->environment->db->data_cache = array('table_names' => array('stale'));
-        $this->environment->db->results = array($keys);
-        $this->environment->dbforge = new Recorder;
-        foreach (array('add_field', 'add_key', 'create_table', 'add_column') as $method) {
-            $this->environment->dbforge->returns[$method] = null;
-        }
-        $this->assertSame($corrupt, $version->verifyLicenseTable());
-        $this->assertArrayNotHasKey('table_names', $this->environment->db->data_cache);
-        $this->assertSame(!$tableExists, in_array(array('create_table', 'eeharbor_licenses'), $this->environment->dbforge->calls, true));
-        $this->assertSame(!$fieldExists, (bool) array_filter($this->environment->dbforge->calls, function ($call) { return $call[0] === 'add_column'; }));
-        $count = count($this->environment->db->calls);
-        $this->assertSame($corrupt, $version->verifyLicenseTable());
-        $this->assertCount($count, $this->environment->db->calls);
     }
 
     /**

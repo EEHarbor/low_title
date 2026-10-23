@@ -150,6 +150,7 @@ class Database
     public $count = 0;
     public $fieldExists = true;
     public $journal;
+    public $schema;
 
     /**
      * Share the query journal across cloned EE database builders.
@@ -189,6 +190,12 @@ class Database
     {
         $this->calls[] = array_merge(array($method), $arguments);
         $this->journal->calls[] = array_merge(array($method), $arguments);
+        if ($this->schema !== null && $method === 'query' && $arguments[0] === "SHOW KEYS FROM exp_eeharbor_licenses WHERE Key_name = 'PRIMARY'") {
+            $keys = isset($this->schema->primaryKeys['eeharbor_licenses']) ? $this->schema->primaryKeys['eeharbor_licenses'] : array();
+
+            return new QueryResult($keys);
+        }
+
         if (in_array($method, array('get', 'get_where', 'query'), true)) {
             if (!$this->results) {
                 throw new RuntimeException('No result queued for ' . $method);
@@ -198,11 +205,29 @@ class Database
         }
 
         if ($method === 'field_exists') {
+            if ($this->schema !== null) {
+                $table = $arguments[1];
+                if (!isset($this->data_cache['field_names'][$table])) {
+                    $this->data_cache['field_names'][$table] = isset($this->schema->fields[$table]) ? $this->schema->fields[$table] : array();
+                }
+
+                return in_array($arguments[0], $this->data_cache['field_names'][$table], true);
+            }
+
             return $this->fieldExists;
         }
 
         if ($method === 'table_exists') {
             $this->tableCheckCaches[] = $this->data_cache;
+            if ($this->schema !== null) {
+                if (!isset($this->data_cache['table_names'])) {
+                    $this->data_cache['table_names'] = array_map(static function ($table) {
+                        return 'exp_' . $table;
+                    }, $this->schema->tables);
+                }
+
+                return in_array('exp_' . $arguments[0], $this->data_cache['table_names'], true);
+            }
 
             return $this->tableExists;
         }
@@ -251,6 +276,7 @@ class Loader
     public $libraries = array();
     public $helpers = array();
     public $views = array();
+    public $forgeCalls = 0;
 
     /**
      * Record loaded EE libraries.
@@ -264,12 +290,19 @@ class Loader
     }
 
     /**
-     * Load the schema builder already configured for this request.
+     * Retain an installed forge or load a fresh DI builder over the schema backend.
      *
      * @return void
+     * @throws RuntimeException
      */
     public function dbforge()
     {
+        $this->forgeCalls++;
+        if (ee()->has('dbforge')) {
+            return;
+        }
+        require_once __DIR__ . '/SchemaForge.php';
+        ee()->set('dbforge', new SchemaForge(ee('db')));
     }
 
     /**

@@ -10,6 +10,9 @@ while IFS='|' read -r label request ee_version case_name; do
     temp_dir="$(mktemp -d "$report_dir/temp-XXXXXXXX")"
     script="$root/tests/scripts/native.php"
     arguments=("$case_name")
+    if [[ "$label" == version-payload-* ]]; then
+        script="$root/tests/scripts/version-payload-probe.php"
+    fi
     if [[ "$label" == loading-* ]]; then
         script="$root/tests/scripts/loading-probe.php"
         arguments+=("$temp_dir")
@@ -109,6 +112,14 @@ navigation-modern|CP|7.5.0|modern
 navigation-legacy|CP|2.5.0|legacy
 navigation-http-route|CP|7.5.0|http-route
 navigation-native-properties|CP|7.5.0|native-properties
+version-payload-fresh-valid|CP|7.5.0|fresh-valid
+version-payload-fresh-corrupt|CP|7.5.0|fresh-corrupt
+version-payload-cached-valid|CP|7.5.0|cached-valid
+version-payload-cached-corrupt|CP|7.5.0|cached-corrupt
+version-payload-pro-site|CP|7.5.0|pro-site
+version-payload-pro-null|CP|7.5.0|pro-null
+version-payload-site-zero|CP|7.5.0|site-zero
+version-payload-oversized|CP|7.5.0|oversized
 CONTEXTS
 python3 "$root/tests/scripts/render-native-coverage.py" "$report_dir" "$report_dir/summary.md"
 exit "$status"

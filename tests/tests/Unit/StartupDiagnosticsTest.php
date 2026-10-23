@@ -23,6 +23,7 @@ class StartupDiagnosticsTest extends TestCase
             'process-worker' => array('tests/scripts/process-worker.php', 'if (!posix_setpgid'),
             'inventory' => array('tests/scripts/inventory.php', '$root ='),
             'navigation' => array('tests/scripts/navigation-probe.php', 'class NavigationProbe'),
+            'version-payload' => array('tests/scripts/version-payload-probe.php', 'require dirname'),
         );
     }
 

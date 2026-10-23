@@ -291,7 +291,7 @@ Procedural units are identified in `source-inventory.json`; class-only units hav
 | `low_title/low_title.phar/FluxCapacitor/Conduit/Version.php::keyExistsForAddon:29` | 7/7 | 3/3 | 2/3 | 32->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Conduit/Version.php::saveLicenseKey:46` | 8/8 | 10/10 | 12/13 | 63->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Conduit/Version.php::deleteLicenseKey:65` | 3/3 | 1/1 | 0/1 | 70->2147483645 |
-| `low_title/low_title.phar/FluxCapacitor/Conduit/Version.php::verifyLicenseTable:72` | 29/29 | 14/14 | 18/20 | 75->2147483645, 80->25 |
+| `low_title/low_title.phar/FluxCapacitor/Conduit/Version.php::verifyLicenseTable:72` | 29/29 | 14/14 | 19/20 | 75->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Conduit/Version.php::check:128` | 29/30 | 14/16 | 16/23 | 166->137, 167->136, 169->2147483645, 166->125, 179->150, 182->155, 182->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Conduit/Version.php::getLicenseKey:184` | 8/8 | 3/3 | 3/3 | none |
 | `low_title/low_title.phar/FluxCapacitor/Conduit/Version.php::getIgnoreSite:199` | 7/7 | 3/3 | 3/3 | none |
@@ -314,8 +314,9 @@ Procedural units are identified in `source-inventory.json`; class-only units hav
 - `Base/Upd::update()` reaches the absent optional `ext.low_title.php`; the required diagnostic blocks subsequent success/catch paths.
 - Cache creation emits an `@mkdir` warning before later logging/false-return lines when a file occupies a directory path. Both source regressions are retained.
 - Modern `ee('db')` supplies independent builders with empty default metadata, or the initial `data_cache` explicitly configured on the connection. Both settings cache-flush outcomes now execute, with assertions that stale table metadata is removed before lookup while unrelated metadata survives. Facade mutations do not seed or replace the DI backend. Legacy settings retain the actual clone contract.
+- License schema fixtures now model successful native metadata changes through a fresh forge builder with independent table/field caches. The public payload retains a wrong corruption flag on a later request-cached valid instance. Real RSA payload overflow is not handled: older PHP emits an invalid empty-ciphertext pixel and PHP 8.1+ raises the original bin2hex(null) deprecation. Both remain ordinary source regressions.
 - CP-only constructors, alternate EE selection, archive index callbacks, and extraction have isolated native contexts where applicable; their graphs are not merged into parent coverage. Physical extraction-stub graphs are preserved: helper methods execute in the parent, while `go()` remains unexecuted there. Native integrity-error paths remain separate.
 - PHP < 5.3.6 and Windows branches cannot execute on the required macOS Herd matrix. The shipped `FluxCapacitor::L` constant is `false`, so its true paths require source changes.
 - EE2 inline views write only inside a disposable installation containing a hash-verified copy of the shipped PHAR. Production paths are never written.
 
-The mandatory skill helper reports 7 loose methods and 201 archive methods. Its `at_target` labels treat missing Clover branch metrics as sufficient; those labels are line-progress information and never campaign-completion evidence.
+The mandatory skill helper, with magic methods included, reports 7 loose methods and 222 archive methods. Its `at_target` labels treat missing Clover branch metrics as sufficient; those labels are line-progress information and never campaign-completion evidence.
