@@ -21,9 +21,9 @@ All 27 shipped source units remain inventoried, including the PHAR stub, procedu
 | `low_title/low_title.phar/FluxCapacitor/Bridge/AbstractBridge.php` | 12/12 | not applicable | none |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE.php` | 9/16 | 0/23 | 20, 34, 44, 52, 60, 68, 76 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE2.php` | 179/183 | not applicable | 49, 163, 164, 409 |
-| `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php` | 172/174 | not applicable | 231, 472 |
-| `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php` | 172/174 | not applicable | 231, 472 |
-| `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php` | 172/174 | not applicable | 231, 472 |
+| `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php` | 174/174 | not applicable | none |
+| `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php` | 174/174 | not applicable | none |
+| `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php` | 174/174 | not applicable | none |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE6.php` | 0/0 | not applicable | none |
 | `low_title/low_title.phar/FluxCapacitor/Conduit/GlobalFieldSettings.php` | 21/21 | not applicable | none |
 | `low_title/low_title.phar/FluxCapacitor/Conduit/McpNav.php` | 0/80 | unknown | 7, 32, 34, 35, 37, 40, 41, 42, 45, 46, 50, 53, 54, 55, 65, 66, 69, 70, 71, 72, 73, 79, 80, 81, 82, 84, 87, 90, 91, 92, 93, 95, 98, 102, 103, 105, 106, 113, 116, 117, 120, 121, 129, 130, 131, 140, 143, 146, 150, 155, 156, 157, 161, 167, 168, 169, 175, 180, 185, 189, 214, 215, 218, 219, 221, 224, 229, 234, 239, 244, 245, 248, 249, 250, 251, 252, 253, 254, 255, 256 |
@@ -172,7 +172,7 @@ Procedural units are identified in `source-inventory.json`; class-only units hav
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::pagination:183` | 8/8 | 5/5 | 6/6 | none |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::getSettings:203` | 4/4 | 3/3 | 2/3 | 208->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::getConfig:214` | 2/2 | 1/1 | 0/0 | none |
-| `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::setConfig:221` | 14/15 | 6/7 | 7/10 | 230->15, 235->18, 254->2147483645 |
+| `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::setConfig:221` | 15/15 | 7/7 | 9/10 | 254->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::cache:256` | 12/12 | 14/14 | 14/24 | 259->16, 259->45, 259->75, 259->75, 259->89, 262->2147483645, 264->2147483645, 270->2147483645, 272->2147483645, 278->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::flashData:293` | 13/13 | 13/13 | 17/19 | 314->55, 323->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::getAddonThemesDir:329` | 2/2 | 3/4 | 2/4 | 331->6, 331->17 |
@@ -186,7 +186,7 @@ Procedural units are identified in `source-inventory.json`; class-only units hav
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::getCachePath:426` | 4/4 | 3/3 | 3/3 | none |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::getFooter:437` | 1/1 | 1/1 | 0/0 | none |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::reduce_double_slashes:446` | 2/2 | 1/1 | 0/0 | none |
-| `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::initiateSettings:456` | 24/25 | 16/17 | 20/24 | 463->2147483645, 471->22, 475->25, 481->66 |
+| `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::initiateSettings:456` | 25/25 | 17/17 | 22/24 | 463->2147483645, 481->66 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::javascript_to_page:517` | 1/1 | 1/1 | 0/1 | 520->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::module_installed:522` | 1/1 | 1/1 | 0/0 | none |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE3.php::assign_parameters:527` | 1/1 | 1/1 | 0/0 | none |
@@ -202,7 +202,7 @@ Procedural units are identified in `source-inventory.json`; class-only units hav
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::pagination:183` | 8/8 | 5/5 | 6/6 | none |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::getSettings:203` | 4/4 | 3/3 | 2/3 | 208->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::getConfig:214` | 2/2 | 1/1 | 0/0 | none |
-| `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::setConfig:221` | 14/15 | 6/7 | 7/10 | 230->15, 235->18, 254->2147483645 |
+| `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::setConfig:221` | 15/15 | 7/7 | 9/10 | 254->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::cache:256` | 12/12 | 14/14 | 14/24 | 259->16, 259->45, 259->75, 259->75, 259->89, 262->2147483645, 264->2147483645, 270->2147483645, 272->2147483645, 278->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::flashData:293` | 13/13 | 13/13 | 17/19 | 314->55, 323->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::getAddonThemesDir:329` | 2/2 | 3/4 | 2/4 | 331->6, 331->17 |
@@ -216,7 +216,7 @@ Procedural units are identified in `source-inventory.json`; class-only units hav
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::getCachePath:426` | 4/4 | 3/3 | 3/3 | none |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::getFooter:437` | 1/1 | 1/1 | 0/0 | none |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::reduce_double_slashes:446` | 2/2 | 1/1 | 0/0 | none |
-| `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::initiateSettings:456` | 24/25 | 16/17 | 20/24 | 463->2147483645, 471->22, 475->25, 481->66 |
+| `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::initiateSettings:456` | 25/25 | 17/17 | 22/24 | 463->2147483645, 481->66 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::javascript_to_page:517` | 1/1 | 1/1 | 0/1 | 520->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::module_installed:522` | 1/1 | 1/1 | 0/0 | none |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE4.php::assign_parameters:527` | 1/1 | 1/1 | 0/0 | none |
@@ -232,7 +232,7 @@ Procedural units are identified in `source-inventory.json`; class-only units hav
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::pagination:183` | 8/8 | 5/5 | 6/6 | none |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::getSettings:203` | 4/4 | 3/3 | 2/3 | 208->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::getConfig:214` | 2/2 | 1/1 | 0/0 | none |
-| `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::setConfig:221` | 14/15 | 6/7 | 7/10 | 230->15, 235->18, 254->2147483645 |
+| `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::setConfig:221` | 15/15 | 7/7 | 9/10 | 254->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::cache:256` | 12/12 | 14/14 | 14/24 | 259->16, 259->45, 259->75, 259->75, 259->89, 262->2147483645, 264->2147483645, 270->2147483645, 272->2147483645, 278->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::flashData:293` | 13/13 | 13/13 | 17/19 | 314->55, 323->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::getAddonThemesDir:329` | 2/2 | 3/4 | 2/4 | 331->6, 331->17 |
@@ -246,7 +246,7 @@ Procedural units are identified in `source-inventory.json`; class-only units hav
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::getCachePath:426` | 4/4 | 3/3 | 3/3 | none |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::getFooter:437` | 1/1 | 1/1 | 0/0 | none |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::reduce_double_slashes:446` | 2/2 | 1/1 | 0/0 | none |
-| `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::initiateSettings:456` | 24/25 | 16/17 | 20/24 | 463->2147483645, 471->22, 475->25, 481->66 |
+| `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::initiateSettings:456` | 25/25 | 17/17 | 22/24 | 463->2147483645, 481->66 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::javascript_to_page:517` | 1/1 | 1/1 | 0/1 | 520->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::module_installed:522` | 1/1 | 1/1 | 0/0 | none |
 | `low_title/low_title.phar/FluxCapacitor/Bridge/EE5.php::assign_parameters:527` | 1/1 | 1/1 | 0/0 | none |
@@ -313,7 +313,7 @@ Procedural units are identified in `source-inventory.json`; class-only units hav
 - `Base/Pi::info()` fails immediately by using `$this` statically. Its later lines require a source fix.
 - `Base/Upd::update()` reaches the absent optional `ext.low_title.php`; the required diagnostic blocks subsequent success/catch paths.
 - Cache creation emits an `@mkdir` warning before later logging/false-return lines when a file occupies a directory path. Both source regressions are retained.
-- Modern `ee('db')` supplies a fresh builder with empty `data_cache`; no fake preloaded primary cache is reused to reach its cache-flush guard. Legacy settings use the actual clone contract. The missed modern guard remains visible.
+- Modern `ee('db')` supplies independent builders with empty default metadata, or the initial `data_cache` explicitly configured on the connection. Both settings cache-flush outcomes now execute, with assertions that stale table metadata is removed before lookup while unrelated metadata survives. Facade mutations do not seed or replace the DI backend. Legacy settings retain the actual clone contract.
 - CP-only constructors, alternate EE selection, archive index callbacks, and extraction have isolated native contexts where applicable; their graphs are not merged into parent coverage. Physical extraction-stub graphs are preserved: helper methods execute in the parent, while `go()` remains unexecuted there. Native integrity-error paths remain separate.
 - PHP < 5.3.6 and Windows branches cannot execute on the required macOS Herd matrix. The shipped `FluxCapacitor::L` constant is `false`, so its true paths require source changes.
 - EE2 inline views write only inside a disposable installation containing a hash-verified copy of the shipped PHAR. Production paths are never written.

@@ -144,6 +144,8 @@ class Database
     public $calls = array();
     public $results = array();
     public $data_cache = array();
+    public $initialDataCache = array();
+    public $tableCheckCaches = array();
     public $tableExists = false;
     public $count = 0;
     public $fieldExists = true;
@@ -160,7 +162,7 @@ class Database
     }
 
     /**
-     * Return a fresh query builder over the same configured backend fixture.
+     * Return a fresh builder with connection defaults over the same backend fixture.
      *
      * @return Database
      */
@@ -168,7 +170,8 @@ class Database
     {
         $query = clone $this;
         $query->calls = array();
-        $query->data_cache = array();
+        $query->data_cache = $this->initialDataCache;
+        $query->tableCheckCaches = array();
         $query->results =& $this->results;
 
         return $query;
@@ -199,6 +202,8 @@ class Database
         }
 
         if ($method === 'table_exists') {
+            $this->tableCheckCaches[] = $this->data_cache;
+
             return $this->tableExists;
         }
 

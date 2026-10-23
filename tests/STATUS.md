@@ -54,15 +54,15 @@ All runs use PHPUnit **9.6.38**, explicit Herd binaries, fresh unique report fil
 
 | PHP | Cases | Assertions | Errors | Failures | Warnings | Risky | Skipped | Incomplete |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| 7.4.33 | 647 | 2266 | 17 | 32 | 0 | 0 | 0 | 0 |
-| 8.0.30 | 647 | 2244 | 18 | 33 | 0 | 0 | 0 | 0 |
-| 8.1.33 | 647 | 2244 | 18 | 33 | 0 | 0 | 0 | 0 |
-| 8.2.30 | 647 | 2177 | 26 | 46 | 0 | 0 | 0 | 0 |
-| 8.3.28 | 647 | 2177 | 26 | 46 | 0 | 0 | 0 | 0 |
-| 8.4.15 | 647 | 2177 | 26 | 46 | 0 | 0 | 0 | 0 |
-| 8.5.0 | 647 | 2177 | 26 | 46 | 0 | 0 | 0 | 0 |
+| 7.4.33 | 652 | 2336 | 17 | 32 | 0 | 0 | 0 | 0 |
+| 8.0.30 | 652 | 2314 | 18 | 33 | 0 | 0 | 0 | 0 |
+| 8.1.33 | 652 | 2314 | 18 | 33 | 0 | 0 | 0 | 0 |
+| 8.2.30 | 652 | 2247 | 26 | 46 | 0 | 0 | 0 | 0 |
+| 8.3.28 | 652 | 2247 | 26 | 46 | 0 | 0 | 0 | 0 |
+| 8.4.15 | 652 | 2247 | 26 | 46 | 0 | 0 | 0 | 0 |
+| 8.5.0 | 652 | 2247 | 26 | 46 | 0 | 0 | 0 | 0 |
 
-Latest full-matrix reports and exact per-case diagnostic output are under `tests/reports/matrix-J910p7V3` with an ignored `tests/reports/matrix-results.json` summary. No warnings, risky tests, skipped tests, or incomplete selections were hidden. PHP 7.4 and PHP 8.5 each execute every configured case.
+Latest full-matrix reports and exact per-case diagnostic output are under `tests/reports/matrix-yIMTOGr6` with an ignored `tests/reports/v10b-matrix.json` summary. No warnings, risky tests, skipped tests, or incomplete selections were hidden. PHP 7.4 and PHP 8.5 each execute every configured case.
 
 ## Production regressions and strict-diagnostic failures
 
@@ -86,7 +86,7 @@ Source failures remain assertions/errors, with no skipped source defects, expect
 
 ## Isolation and remaining harness limits
 
-Each test restores the caller EE global, request arrays, form-helper global, error reporting/handler, include path, and autoload stack; a nested-context contract test verifies restoration. Class declarations, method-local static maps, and PHAR's process-wide `interceptFileFuncs()` effect cannot be unloaded or reversed in the parent suite. Bootstrap/discovery loads are documented process-level state. Native loading/diagnostic cases run in fresh PHP processes, and algorithm subjects use unique cache keys. Full 647-case randomized runs on PHP 7.4 and 8.5 with seed `20261023` reproduce the ordered counts exactly; logs are `tests/reports/v9b-random74.txt` and `v9b-random85.txt`.
+Each test restores the caller EE global, request arrays, form-helper global, error reporting/handler, include path, and autoload stack; a nested-context contract test verifies restoration. Class declarations, method-local static maps, and PHAR's process-wide `interceptFileFuncs()` effect cannot be unloaded or reversed in the parent suite. Bootstrap/discovery loads are documented process-level state. Native loading/diagnostic cases run in fresh PHP processes, and algorithm subjects use unique cache keys. Full 652-case randomized runs on PHP 7.4 and 8.5 with seed `20261023` reproduce the ordered counts and source issue identities exactly; logs are `tests/reports/v10b-random74.txt` and `v10b-random85.txt`.
 
 All native fixture children set both `sys_temp_dir` and `TMPDIR` to their unique owned directory. Extraction probes assert the actual `Extract_low_title::$temp` path and verify cleanup, including repeated runs. Review caught earlier probes falling back to shared `/tmp/pharextract/low_title`; that existing shared tree is preserved because ownership is not established.
 
@@ -175,3 +175,18 @@ The plain session context reaches `go()` 33/50 lines, 21/35 blocks and 20/53 exi
 
 
 The standing independent reviewer approved exact seven-path replacement patch SHA-256 `a7fb59fd8f04ef042ffb679d1b7290e18839742365db8fe11f41dae525eb4d67` atop `fdcb272f2804263d725750621b3dfeff201c0189`, with no remaining actionable bounded-diff findings. Its fresh private reconstruction independently reproduced all seven complete 647-case suites and exact issue identities, randomized endpoint runs, the eight-case / 112-assertion / six-failure session focus, every parent line/graph/exit value across all 27 units, and every raw graph/counter/exit/status/generated row across all 46 native contexts on each of PHP 7.4 and 8.2. The valid empty/default session proof, intended extraction root, source die-0 status, shutdown recorder, owned cleanup and permissions were independently verified. All 37 PHP lint files, script syntax, exact manifest, source hashes and tooling pins passed. Commit `07369f602201e58672fa4061c90d8d54bee50cc3` contains the exact reviewed replacement and was pushed only to `origin/unit-tests-2026`; fresh live origin matched the SHA, divergence was `0 0`, the checkout was clean and production diff remained empty. The earlier v9 stays withdrawn. Source, input/platform, instrumentation, process-state, native-shell deadline and integration limits remain incomplete, while subsequent configured-query-default and optional-navigation work remains separate.
+
+
+## Configured query defaults replacement checkpoint
+
+Status: **652-case checkpoint awaiting independent review; whole-source coverage remains incomplete.** Base: published `7def88108c113f8fa089ddfaa841c3047577c31d`. The preceding STATUS-only publication record was independently approved as SHA-256 `eaa15fbd6e54bc8706fdd54b4fbeeee26e58f464501262059a12f952d544b305`; fresh live origin matched that head with clean status and parity `0 0` before this work. The initial v10 patch SHA-256 `12d4fe5ebd72b4c70738217f71aa12f0e87c3fa5b36bc69de9c702d4f7e267b3` is withdrawn: review found that a general predicate-presence assertion could pass if only the earlier count filter remained. This replacement asserts the entire ordered write-query sequence so the update must carry its own filter.
+
+Five additional passing cases distinguish connection-configured initial metadata from warmed facade metadata. A direct factory contract verifies independent builders, per-query mutation, and preservation of the original DI backend after facade removal or replacement. The four EE3/4/5/6 settings cases record each builder's metadata at `table_exists()` and assert that `table_names` is already removed while unrelated metadata survives. Their exact write-query sequence requires a fresh site-19 filter immediately before its sole update, independently of the earlier count filter, and rejects insert/delete or extra calls. They also assert exact site-19 read/write predicates and update payloads, unchanged facade/backend caches, and the original defaults in a later fresh builder. Defaults remain empty for every existing fixture that does not explicitly configure metadata.
+
+Read-only actual-core probes at `/private/tmp/low-title-query-config-full-proof-6fdwrm2j` execute the unmodified ConfigFile, DBConfig, Database, lazy Connection, Query and Log constructors on all seven runtimes. Two owned literal configuration files establish both empty defaults and an explicit `data_cache` connection option; original constructor methods receive that option without subclassing or Reflection. Each run has strict E_ALL, an owned TMPDIR/sys_temp_dir, no SQL queries, and complete config-file cleanup. Bounded global config helpers return empty defaults and preserve literal values, and the logging sink has no external side effects; no full application/bootstrap, interpolation or database-server integration is claimed. The fixture matches all eight comparable cache/identity/log values on every runtime, with the real and fixture query classes checked separately. These controls qualify the earlier empty-default observation: the modern guards are feasible with explicitly configured connection metadata, rather than by reusing a warmed facade builder.
+
+Fresh full matrix `tests/reports/matrix-yIMTOGr6` runs 652 cases on every required runtime: PHP 7.4 has 2336 assertions / 17 errors / 32 failures; PHP 8.0–8.1 have 2314 / 18 / 33; PHP 8.2–8.5 have 2247 / 26 / 46. Warnings/risky/skipped/incomplete remain zero. Every prior source issue identity and kind is preserved. The five-case focus passes with 70 assertions on PHP 7.4 and 8.5; full randomized endpoint runs with seed `20261023` reproduce all counts and exact issue identities. All 38 PHP support/test/probe files lint on 7.4/8.5, and Python/Bash syntax checks pass.
+
+Fresh complete 652-case Clover `tests/reports/coverage-UfwLBMGK/clover.xml` and genuine raw `coverage-3mqCTyeP/raw.json` produce `v10b-branches74.json` and `v10b-coverage-snapshot.json`. All 27 units and 245 measured parent graphs remain visible. EE3/4/5 each gains the two executable cache-clear lines, reaching 174/174 file lines. Each `setConfig()` reaches 15/15 lines, 7/7 blocks and 9/10 actual exits; each `initiateSettings()` reaches 25/25 lines, 17/17 blocks and 22/24 exits. The remaining synthetic return/short-circuit exits remain explicit; full line coverage does not establish complete branch coverage. EE6 inherits EE5 behavior without executable declarations of its own. No other per-method line/block/exit count changes.
+
+Fresh native reports retain the same 46 independent contexts on each of PHP 7.4 and 8.2 (`native-coverage-ocZQF9ha` and `native-coverage-17nQvHak`). Every source raw graph/counter and exit status matches the prior reviewed contexts exactly, and both rendered native documents are unchanged. No native counts are merged with the parent or used to close a source unit. The source defects, conditional graph attribution, synthetic exits, optional navigation/platform/constant prerequisites, process-global state, finite standalone native-shell deadline gap and bounded integration limits remain incomplete. Further feasible ordinary contexts remain active scope.
