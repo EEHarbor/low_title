@@ -10,7 +10,7 @@ All 27 shipped source units remain inventoried, including the PHAR stub, procedu
 |---|---:|---:|---|
 | `low_title/addon.setup.php` | 12/12 | 0/0 | none |
 | `low_title/autoload.php` | 18/32 | 0/1 | 18, 19, 57, 63, 66, 74, 76, 77, 81, 82, 84, 90, 92, 93 |
-| `low_title/low_title.phar#stub` | 7/154 | 0/45 | 13, 14, 16, 58, 59, 61, 62, 63, 64, 65, 67, 68, 69, 70, 71, 72, 74, 75, 76, 77, 78, 80, 81, 82, 83, 84, 85, 87, 88, 89, 90, 92, 93, 94, 96, 97, 98, 99, 115, 116, 117, 118, 121, 122, 123, 125, 126, 127, 129, 131, 132, 135, 136, 138, 139, 141, 145, 146, 148, 152, 154, 155, 156, 157, 158, 159, 161, 164, 165, 166, 167, 168, 170, 171, 172, 173, 175, 176, 177, 178, 180, 181, 183, 184, 189, 191, 192, 194, 198, 199, 200, 202, 203, 205, 207, 208, 210, 215, 216, 217, 218, 219, 220, 221, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 236, 241, 242, 244, 245, 246, 247, 249, 250, 254, 255, 256, 257, 260, 261, 262, 265, 266, 269, 274, 276, 277, 278, 279, 280, 285, 286, 287, 288, 291, 292 |
+| `low_title/low_title.phar#stub` | 55/154 | 0/45 | 13, 14, 16, 58, 59, 61, 62, 63, 64, 65, 67, 68, 69, 70, 71, 72, 74, 75, 76, 77, 78, 80, 81, 82, 83, 84, 85, 87, 88, 89, 90, 92, 93, 94, 96, 97, 98, 99, 115, 116, 117, 118, 121, 122, 123, 125, 126, 127, 129, 131, 132, 135, 136, 138, 139, 141, 145, 146, 148, 152, 154, 155, 156, 157, 158, 159, 161, 164, 165, 166, 167, 168, 170, 171, 172, 173, 175, 176, 177, 178, 180, 181, 183, 184, 189, 191, 192, 194, 199, 200, 202, 203, 205, 261, 262, 266, 280, 291, 292 |
 | `low_title/low_title.phar/FluxCapacitor/Base/Ext.php` | 63/64 | not applicable | 152 |
 | `low_title/low_title.phar/FluxCapacitor/Base/Ft.php` | 50/52 | 0/18 | 53, 54 |
 | `low_title/low_title.phar/FluxCapacitor/Base/Mcp.php` | 73/82 | not applicable | 32, 104, 114, 135, 145, 184, 185, 187, 188 |
@@ -42,10 +42,10 @@ Procedural units are identified in `source-inventory.json`; class-only units hav
 |---|---:|---:|---:|---|
 | `low_title/autoload.php::{closure}:19` | 18/30 | 22/31 | 22/44 | 35->2147483645, 46->151, 48->66, 48->74, 70->80, 73->92, 73->94, 73->98, 73->98, 73->100, 76->109, 81->115, 81->121, 81->122, 81->126, 81->127, 81->131, 81->132, 82->142, 87->2147483645, 90->2147483645, 92->2147483645 |
 | `low_title/low_title.phar#stub::go:113` | 0/50 | 0/35 | 0/53 | 121->27, 122->35, 122->40, 125->40, 127->50, 127->54, 127->54, 127->55, 127->27, 129->60, 129->68, 132->2147483645, 138->79, 138->87, 139->85, 139->87, 141->2147483645, 145->90, 145->98, 146->96, 146->98, 148->2147483645, 154->105, 154->110, 154->110, 154->111, 154->149, 156->122, 156->133, 158->133, 158->139, 158->144, 158->144, 158->145, 158->147, 159->2147483645, 164->149, 170->188, 170->286, 175->218, 175->285, 175->219, 175->285, 180->253, 180->263, 181->284, 175->284, 175->218, 189->286, 191->293, 191->295, 194->295, 194->2147483645 |
-| `low_title/low_title.phar#stub::tmpdir:196` | 0/9 | 0/14 | 0/19 | 198->8, 198->43, 199->13, 199->18, 199->22, 199->22, 199->24, 199->26, 200->2147483645, 202->31, 202->35, 202->35, 202->36, 202->41, 203->2147483645, 205->2147483645, 207->49, 207->51, 208->2147483645 |
-| `low_title/low_title.phar#stub::_unpack:213` | 0/20 | 0/4 | 0/4 | 223->133, 223->133, 223->137, 223->55 |
-| `low_title/low_title.phar#stub::extractFile:239` | 0/18 | 0/14 | 0/19 | 244->35, 245->14, 245->25, 247->35, 244->35, 244->36, 244->11, 254->40, 254->46, 255->54, 256->49, 256->54, 260->54, 260->59, 260->67, 262->2147483645, 265->79, 265->81, 266->2147483645 |
-| `low_title/low_title.phar#stub::_removeTmpFiles:272` | 0/10 | 0/12 | 0/18 | 276->12, 276->55, 276->13, 276->55, 277->18, 277->54, 278->23, 278->30, 278->36, 278->36, 279->42, 279->46, 279->46, 279->47, 279->54, 276->54, 276->12, 288->2147483645 |
+| `low_title/low_title.phar#stub::tmpdir:196` | 4/9 | 4/14 | 3/19 | 198->8, 199->13, 199->18, 199->22, 199->22, 199->24, 199->26, 200->2147483645, 202->31, 202->35, 202->35, 202->36, 202->41, 203->2147483645, 205->2147483645, 208->2147483645 |
+| `low_title/low_title.phar#stub::_unpack:213` | 20/20 | 4/4 | 4/4 | none |
+| `low_title/low_title.phar#stub::extractFile:239` | 15/18 | 12/14 | 15/19 | 260->59, 262->2147483645, 265->79, 266->2147483645 |
+| `low_title/low_title.phar#stub::_removeTmpFiles:272` | 9/10 | 10/12 | 11/18 | 276->55, 277->54, 279->42, 279->46, 279->47, 276->54, 288->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Base/Ext.php::__construct:25` | 5/5 | 1/1 | 0/1 | 32->2147483645 |
 | `low_title/low_title.phar/FluxCapacitor/Base/Ext.php::activateExtension:34` | 3/3 | 4/4 | 4/5 | 36->10 |
 | `low_title/low_title.phar/FluxCapacitor/Base/Ext.php::updateExtension:44` | 2/2 | 1/1 | 0/0 | none |
@@ -314,7 +314,7 @@ Procedural units are identified in `source-inventory.json`; class-only units hav
 - `Base/Upd::update()` reaches the absent optional `ext.low_title.php`; the required diagnostic blocks subsequent success/catch paths.
 - Cache creation emits an `@mkdir` warning before later logging/false-return lines when a file occupies a directory path. Both source regressions are retained.
 - Modern `ee('db')` supplies a fresh builder with empty `data_cache`; no fake preloaded primary cache is reused to reach its cache-flush guard. Legacy settings use the actual clone contract. The missed modern guard remains visible.
-- CP-only constructors, alternate EE selection, archive index callbacks, and extraction have isolated native contexts where applicable; their graphs are not merged into parent coverage. Physical extraction-stub graph data is preserved, while its five extraction functions remain unexecuted in the parent graph.
+- CP-only constructors, alternate EE selection, archive index callbacks, and extraction have isolated native contexts where applicable; their graphs are not merged into parent coverage. Physical extraction-stub graphs are preserved: helper methods execute in the parent, while `go()` remains unexecuted there. Native integrity-error paths remain separate.
 - PHP < 5.3.6 and Windows branches cannot execute on the required macOS Herd matrix. The shipped `FluxCapacitor::L` constant is `false`, so its true paths require source changes.
 - EE2 inline views write only inside a disposable installation containing a hash-verified copy of the shipped PHAR. Production paths are never written.
 

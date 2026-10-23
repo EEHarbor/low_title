@@ -28,7 +28,8 @@ The initial skill coverage command found no tests and could not produce baseline
 ./tests/scripts/run-coverage.sh lines
 ./tests/scripts/run-coverage.sh branches
 ./tests/scripts/run-native-coverage.sh
-# Both print unique REPORT_DIR paths and verify the pinned PHAR before execution.
+# Coverage commands print unique REPORT_DIR paths.
+# PHPUnit line/branch runs verify their pinned tool PHAR before execution.
 # Substitute those paths below.
 python3 tests/scripts/summarize-branches.py <branch-report-dir>/raw.json tests/reports/branches.json
 python3 tests/scripts/snapshot-coverage.py <line-report-dir>/clover.xml tests/reports/branches.json tests/reports/coverage-snapshot.json
@@ -41,11 +42,11 @@ python3 tests/scripts/render-native-coverage.py <native-report-dir> tests/NATIVE
   --repo-root "$PWD" --source-root tests/.source --coverage-clover <line-report-dir>/clover.xml --reuse-clover --json
 ```
 
-E_ALL diagnostics from shipped source and test support throw even under `@`. A fresh subprocess deliberately triggers an `@`-suppressed user deprecation to verify enforcement. PHPUnit's own suppressed filesystem probes retain their internal handling; unsuppressed tooling diagnostics still fail. Every native child uses its parent's explicit PHP binary and E_ALL; native children deliberately disable coverage and measurement-source substitution so shipped loading/compilation is tested separately.
+E_ALL diagnostics from shipped source and test support throw even under `@`. A fresh subprocess deliberately triggers an `@`-suppressed user deprecation to verify enforcement. PHPUnit's own suppressed filesystem probes retain their internal handling; unsuppressed tooling diagnostics still fail. Every PHPUnit native child uses its parent's explicit PHP binary and E_ALL, with coverage and measurement-source substitution disabled so shipped loading/compilation is tested separately. The standalone native-coverage command instruments its separate source contexts explicitly.
 
 Algorithm subjects declare missing source properties to permit independent behavior tests while native unmodified classes separately fail for their dynamic-property diagnostics. No source diagnostic is made an expected success. Reflection accessibility calls are limited to PHP < 8.1; PHP 8.5 does not execute the deprecated API.
 
-EE collaborator shapes were checked against `/Users/tomjaeger/Sites/ee_repo_2`: `EE_DB_result::row()` including MySQL nulls and empty arrays, template missing-parameter defaults, fieldtype content IDs, terminating redirects, and Sidebar Header objects. Direct harness contract vectors verify numeric/current result rows, nulls, POST-first input, the strict XSS flag, template yes/no aliases with the url_title exception, and fresh database builders sharing backend fixture results. Legacy facade `set()` rejects loaded services, including null, while DI factories remain separate; direct harness vectors verify remove/reload of declared db/logger collaborators and coherent public access. Active Record recordings verify exact bound predicates, joins, limits, serialized payloads, and site identity; pagination verifies its total-row factory argument. Normal execution loads shipped files/archives; only coverage mode loads hash-verified archive-member copies.
+EE collaborator shapes were checked against `/Users/tomjaeger/Sites/ee_repo_2`: `EE_DB_result::row()` including MySQL nulls and empty arrays, template missing-parameter defaults, fieldtype content IDs, terminating redirects, and Sidebar Header objects. Direct harness contract vectors verify numeric/current result rows, nulls, POST-first input, the strict XSS flag, template yes/no aliases with the url_title exception, and fresh database builders sharing backend fixture results. Legacy facade `set()` rejects loaded services, including null, while DI factories remain separate; direct harness vectors verify remove/reload of declared db/logger collaborators and coherent public access. Active Record recordings verify exact bound predicates, joins, limits, serialized payloads, and site identity; pagination verifies its total-row factory argument and requires a CP URL object at render time. The bounded typed collaborator matches `CP/Pagination::render(Url)`; direct read-only probes of actual EE 3.5, 4.1, 5.3, 6, and current implementations on all seven runtimes reject strings, null, arrays, and unrelated objects before rendering. Those 35 probes establish the argument contract, not full EE pagination integration. Normal execution loads shipped files/archives; only coverage mode loads hash-verified archive-member copies.
 
 ## Full required matrix
 
@@ -53,19 +54,19 @@ All runs use PHPUnit **9.6.38**, explicit Herd binaries, fresh unique report fil
 
 | PHP | Cases | Assertions | Errors | Failures | Warnings | Risky | Skipped | Incomplete |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| 7.4.33 | 589 | 1813 | 15 | 22 | 0 | 0 | 0 | 0 |
-| 8.0.30 | 589 | 1793 | 16 | 22 | 0 | 0 | 0 | 0 |
-| 8.1.33 | 589 | 1793 | 16 | 22 | 0 | 0 | 0 | 0 |
-| 8.2.30 | 589 | 1726 | 24 | 35 | 0 | 0 | 0 | 0 |
-| 8.3.28 | 589 | 1726 | 24 | 35 | 0 | 0 | 0 | 0 |
-| 8.4.15 | 589 | 1726 | 24 | 35 | 0 | 0 | 0 | 0 |
-| 8.5.0 | 589 | 1726 | 24 | 35 | 0 | 0 | 0 | 0 |
+| 7.4.33 | 625 | 2032 | 17 | 24 | 0 | 0 | 0 | 0 |
+| 8.0.30 | 625 | 2012 | 18 | 24 | 0 | 0 | 0 | 0 |
+| 8.1.33 | 625 | 2012 | 18 | 24 | 0 | 0 | 0 | 0 |
+| 8.2.30 | 625 | 1945 | 26 | 37 | 0 | 0 | 0 | 0 |
+| 8.3.28 | 625 | 1945 | 26 | 37 | 0 | 0 | 0 | 0 |
+| 8.4.15 | 625 | 1945 | 26 | 37 | 0 | 0 | 0 | 0 |
+| 8.5.0 | 625 | 1945 | 26 | 37 | 0 | 0 | 0 | 0 |
 
-Latest full-matrix reports and exact per-case diagnostic output are under `tests/reports/matrix-AxEZcodI` with an ignored `tests/reports/matrix-results.json` summary. No warnings, risky tests, skipped tests, or incomplete selections were hidden. PHP 7.4 and PHP 8.5 each execute every configured case.
+Latest full-matrix reports and exact per-case diagnostic output are under `tests/reports/matrix-LVv6nZLA` with an ignored `tests/reports/matrix-results.json` summary. No warnings, risky tests, skipped tests, or incomplete selections were hidden. PHP 7.4 and PHP 8.5 each execute every configured case.
 
 ## Production regressions and strict-diagnostic failures
 
-- `autoload.php:33`: the namespace-prefix guard also handles sibling `FluxCapacitorExtra` classes and throws for them. The PHAR extraction stub's line 177 emits `@mkdir(): File exists` under strict diagnostics.
+- `autoload.php:33`: the namespace-prefix guard also handles sibling `FluxCapacitorExtra` classes and throws for them. The PHAR extraction stub's line 177 emits `@mkdir(): File exists` under strict diagnostics. Its size-error message reads undefined `$stat` at line 262; nested cleanup attempts `@rmdir()` before recursion at line 278, and hidden files skipped by `glob('*')` make the final line-285 removal warn.
 - `pi.low_title.php:122`: a site's pages array without `uris` warns. Line 409 passes nullable custom-field titles to `strlen()`; native null outputs also violate the string return contract on older PHP. Line 153 creates undeclared `return_data` on native instances (PHP >= 8.2).
 - Archived `Base/Pi.php:29`: static `info()` uses `$this` and throws. Base and conduit native constructors create undeclared properties on PHP >= 8.2.
 - Archived `Base/Ext.php:183`: the legacy registration wrapper resets the caller's hook, priority, and enabled arguments. `Base/Upd.php:62` includes an absent optional extension under `@`.
@@ -81,11 +82,11 @@ Source failures remain assertions/errors, with no skipped source defects, expect
 
 ## Isolation and remaining harness limits
 
-Each test restores the caller EE global, request arrays, form-helper global, error reporting/handler, include path, and autoload stack; a nested-context contract test verifies restoration. Class declarations, method-local static maps, and PHAR's process-wide `interceptFileFuncs()` effect cannot be unloaded or reversed in the parent suite. Bootstrap/discovery loads are documented process-level state. Native loading/diagnostic cases run in fresh PHP processes, and algorithm subjects use unique cache keys. Full 589-case randomized runs on PHP 7.4 and 8.5 with seed `20261023` reproduce the ordered counts exactly; logs are `tests/reports/v5b-random74.txt` and `v5b-random85.txt`.
+Each test restores the caller EE global, request arrays, form-helper global, error reporting/handler, include path, and autoload stack; a nested-context contract test verifies restoration. Class declarations, method-local static maps, and PHAR's process-wide `interceptFileFuncs()` effect cannot be unloaded or reversed in the parent suite. Bootstrap/discovery loads are documented process-level state. Native loading/diagnostic cases run in fresh PHP processes, and algorithm subjects use unique cache keys. Full 625-case randomized runs on PHP 7.4 and 8.5 with seed `20261023` reproduce the ordered counts exactly; logs are `tests/reports/v6-random74.txt` and `v6-random85.txt`.
 
 All native fixture children set both `sys_temp_dir` and `TMPDIR` to their unique owned directory. Extraction probes assert the actual `Extract_low_title::$temp` path and verify cleanup, including repeated runs. Review caught earlier probes falling back to shared `/tmp/pharextract/low_title`; that existing shared tree is preserved because ownership is not established.
 
-PHPUnit native, autoload, installation, and launcher probes use `Support/Process.php`: independent file-backed stdout/stderr, a default two-second deadline, a file-confirmed owned process group, TERM/KILL escalation, child reaping, and finally-closed owned temporary streams. Controls retain one MiB on each output stream and bound seven-second stalls, including SIGTERM-ignoring children, while checking that the owned PID is gone. POSIX/pcntl support was verified on all seven explicit Herd runtimes. The standalone native-coverage shell command runs its finite controlled contexts directly. The raw collector initially exhausted its command-local 1 GB limit while serializing tooling graphs; the final runner installs an early filter and filters the persisted JSON to the complete shipped loose tree, physical PHAR, and all PHAR members. A guard rejects runs without an executed source function graph. The latest raw JSON contains 26 source files and no test/tooling paths; the declaration-only EE6 member remains in the 27-unit inventory. That failed artifact is not reused.
+PHPUnit native, autoload, installation, and launcher probes use `Support/Process.php`: independent file-backed stdout/stderr, a default two-second monotonic `hrtime()` deadline, a file-confirmed owned process group, TERM/KILL escalation, child reaping, and finally-closed owned temporary streams. Controls retain one MiB on each output stream and bound seven-second stalls, including SIGTERM-ignoring children, while checking that the owned PID is gone. POSIX/pcntl support was verified on all seven explicit Herd runtimes. The standalone native-coverage shell command runs its finite controlled contexts directly. The raw collector initially exhausted its command-local 1 GB limit while serializing tooling graphs; the final runner installs an early filter and filters the persisted JSON to the complete shipped loose tree, physical PHAR, and all PHAR members. A guard rejects runs without an executed source function graph. The latest raw JSON contains 26 source files and no test/tooling paths; the declaration-only EE6 member remains in the 27-unit inventory. That failed artifact is not reused.
 
 ## Coverage, review, and publication
 
@@ -106,3 +107,14 @@ The raw collector now records Reflection constructor source ranges. Xdebug 3.1.6
 Root review of the first follow-up packet identified two harness defects before publication: blocking sequential native output and the DI database factory depending on the facade property. The replacement packet uses the bounded shared runner above. The database factory captures its original backend independently; direct controls verify that facade removal/replacement leaves fresh DI builders attached to that original backend. The updater native oracle now checks the entire ordered mutation sequence and ownership predicates. These are harness fixes; source regressions remain visible.
 
 Root independently approved the exact 23-path replacement patch SHA-256 `5cae23a3225d16a56d6ff0eff47f6ed9e07bead230437f8623a5358eeb6bb392`, based on `80e115b456723ff5afb94409fe156200fd4f53f3`, with no remaining actionable findings. Independent replays matched all seven 589-case suites and all 14 native contexts, source inventory, bounded flood/stall controls, independent database factories, and updater predicates. Commit `6f66f2754f5522f7e66b3f155d75e28538850e3b` contains that exact reviewed patch and was pushed to `origin/unit-tests-2026`; fresh live origin verification matched the SHA, divergence was `0 0`, and production diff remained empty. This is an incomplete source-red checkpoint. Feasible legacy/fieldtype loading paths and PHAR extraction helper coverage remain for subsequent reviewed work; inherited pagination collaborator fidelity and monotonic process deadlines will also be checked separately.
+
+
+## PHAR helper checkpoint under review
+
+The current 625-case candidate adds direct shipped-stub coverage for the complete real manifest and all 22 member payloads, one-member and metadata/alias manifests, compression-mask accumulation, plain/gzip/bzip extraction at lengths 0, 1, 8191, 8192, 8193, 16384, and 16385, exact stream consumption, Unix TMPDIR preference/fallback, and empty/flat/nested/hidden cleanup. Owned cleanup runs in `finally`, restores the caller directory and environment, and verifies the unique tree is gone even when source raises a diagnostic. The source is unchanged. Four newly red cases expose two cleanup diagnostics and the two malformed-size/truncated-stream diagnostics above; all previous issue identities remain present.
+
+Parent physical-stub lines improve from 7/154 to 55/154. `_unpack()` measures 20/20 executable lines, 4/4 blocks, and 4/4 actual exits. `extractFile()` reaches 15/18 lines and 15/19 exits; `_removeTmpFiles()` reaches 9/10 lines and 11/18 exits. The Unix temporary-directory paths execute, while Windows-only paths remain unavailable. Full extraction `go()` remains unexecuted in the parent and blocked by the separate native extraction regression; source warnings prevent the recursive-cleanup call. This is neither a completed source-file milestone nor full campaign completion.
+
+Fresh parent line and raw captures are `tests/reports/coverage-qSGCBBeM/clover.xml` and `tests/reports/coverage-cXoiBiI7/raw.json`; normalized reports are `v6-branches74.json` and `v6-coverage-snapshot.json`. The raw collector retains 26 shipped source files; the normalized inventory report retains all 27 units. Native coverage at `tests/reports/native-coverage-rmoIaG0l` retains 17 independent contexts: the prior 14 and checksum rejection exit 0; malformed size and truncated input exit 1 with the source diagnostic. The checksum's intentional diagnostic with legacy exit 0 is asserted directly. Native exit/error branches are never merged into parent coverage. Thirty PHP support/test/probe files lint on PHP 7.4/8.5, Python/Bash syntax checks pass, and full randomized 7.4/8.5 runs retain the ordered counts and issue identities.
+
+This candidate also corrects inherited pagination test inputs to CP URL objects, adds four direct invalid-type collaborator controls, and switches runner/deadline-control clocks to monotonic `hrtime()`. It awaits independent exact-diff review and publication. Legacy `get_instance()` fallback and native fieldtype system/app/installer layouts remain feasible subsequent work; private probes have already identified an installer-ancestor path replacement regression. No production repair is authorized.

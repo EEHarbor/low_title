@@ -16,6 +16,9 @@ targets = {
     'updater-ee2': [('Base/Upd', 'uninstall')],
     'updater-ee5': [('Base/Upd', 'uninstall')],
     'updater-ee6': [('Base/Upd', 'uninstall')],
+    'extract-checksum': [('@stub', 'extractFile')],
+    'extract-size': [('@stub', 'extractFile')],
+    'extract-truncated': [('@stub', 'extractFile')],
 }
 for version, implementation in [(2, 2), (3, 3), (4, 4), (5, 5), (6, 5), (7, 5)]:
     targets[f'bridge-ee{version}'] = [('Bridge/EE', '__construct'), (f'Bridge/EE{implementation}', 'getAddonThemesDir')]
@@ -25,8 +28,11 @@ for context, methods in targets.items():
     summary = json.loads((reports / f'{context}.branches.json').read_text())
     exit_code = int((reports / f'{context}.exit').read_text())
     for member, name in methods:
-        relative = 'index.php' if member == '@index' else 'FluxCapacitor/' + member + '.php'
-        origin = 'low_title/low_title.phar/' + relative
+        relative = None
+        origin = 'low_title/low_title.phar#stub'
+        if member != '@stub':
+            relative = 'index.php' if member == '@index' else 'FluxCapacitor/' + member + '.php'
+            origin = 'low_title/low_title.phar/' + relative
         graphs = [item for item in summary['methods'] if item['file'] == origin and (item['function'].endswith('->' + name) or name == '{closure}' and '{closure:' in item['function'])]
         graph = graphs[0] if len(graphs) == 1 else None
         source_line = None if graph is None else graph['start_line']
@@ -36,7 +42,9 @@ for context, methods in targets.items():
         method = declarations[0] if len(declarations) == 1 else None
         if graph is not None and graph.get('attribution_matches') is False:
             graph = None
-        source = next((item for path, item in raw['files'].items() if path.endswith('/' + relative)), None)
+        source = raw['files'].get(str(root / 'low_title/low_title.phar'))
+        if relative is not None:
+            source = next((item for path, item in raw['files'].items() if path.endswith('/' + relative)), None)
         covered = None if source is None or method is None else {int(line): count for line, count in source['lines'].items() if method['line'] <= int(line) <= method['end_line'] and count >= -1}
         line_counts = 'unknown' if covered is None else f"{sum(count > 0 for count in covered.values())}/{len(covered)}"
         blocks = 'unknown' if graph is None else f"{graph['blocks_hit']}/{graph['blocks']}"
@@ -45,5 +53,5 @@ for context, methods in targets.items():
         request = raw['context']['request']
         version = raw['context']['ee_version']
         lines.append(f"| `{context}` | {request} / {version} | {raw['runtime']} / {raw['xdebug']} | {exit_code} | `{member}::{name}` | {line_counts} | {blocks} | {exits} | {missing} |")
-lines += ['', 'Raw JSON, retained out/out_hit graphs, stdout/stderr, exit status, and the generated summary are stored in the unique native report directory. Xdebug 3.1.6 attributes every conditional Bridge/EE constructor graph to its first declaration; Reflection identifies the actual runtime method. Mismatched graph ranges remain preserved in the raw/normalized report and have unknown per-method branch metrics above. Uninstrumented native contexts remain unknown. The absent optional add-on navigation class keeps its successful-inclusion paths unavailable; source diagnostics still stop native constructors on PHP >= 8.2 in the complete matrix.', '']
+lines += ['', 'Raw JSON, retained out/out_hit graphs, stdout/stderr, exit status, and the generated summary are stored in the unique native report directory. The checksum rejection intentionally terminates with its diagnostic and legacy exit status 0. Size and truncated-stream contexts exit 1 because the shipped size-error expression reads undefined $stat at stub line 262; strict diagnostics remain visible. Xdebug 3.1.6 attributes every conditional Bridge/EE constructor graph to its first declaration; Reflection identifies the actual runtime method. Mismatched graph ranges remain preserved in the raw/normalized report and have unknown per-method branch metrics above. Uninstrumented native contexts remain unknown. The absent optional add-on navigation class keeps its successful-inclusion paths unavailable; source diagnostics still stop native constructors on PHP >= 8.2 in the complete matrix.', '']
 pathlib.Path(sys.argv[2]).write_text('\n'.join(lines))

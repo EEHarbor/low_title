@@ -8,6 +8,21 @@ if ($case === 'bridge-version') {
 }
 try {
     require dirname(__DIR__) . '/bootstrap.php';
+    if (strpos($case, 'extract:') === 0) {
+        $data = 'payload';
+        $stored = $case === 'extract:truncated' ? substr($data, 0, -1) : $data;
+        $size = strlen($data) + ($case === 'extract:size' ? 1 : 0);
+        $checksum = crc32($data) + ($case === 'extract:checksum' ? 1 : 0);
+        $stream = fopen('php://memory', 'r+');
+        try {
+            fwrite($stream, $stored);
+            rewind($stream);
+            $entry = array($size, 0, strlen($data), sprintf('%u', $checksum & 0xffffffff), 0, 0, 0, 0);
+            \Extract_low_title::extractFile('payload.bin', $entry, $stream);
+        } finally {
+            fclose($stream);
+        }
+    }
     if ($case === 'constructor') {
         ee()->db->results = array(array());
         new Low_title;

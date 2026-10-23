@@ -519,7 +519,7 @@ class BridgeTest extends TestCase
         $bridge->view('license', array('base_url' => '/given', 'cp_page_title' => 'Given'));
         $this->assertSame('/given', $view->variables['base_url']);
         $this->assertSame('Given', $view->variables['cp_page_title']);
-        $pagination = new Recorder;
+        $pagination = new Pagination;
         foreach (array('perPage', 'currentPage', 'displayPageLinks', 'queryStringVariable') as $method) {
             $pagination->returns[$method] = $pagination;
         }
@@ -530,11 +530,12 @@ class BridgeTest extends TestCase
 
             return $pagination;
         };
-        $this->assertSame('<pagination>', $bridge->pagination(array('total_rows' => 100, 'per_page' => 10, 'current_page' => 2, 'base_url' => '/entries', 'page_links' => 5, 'page_query_string' => 'page')));
-        $this->assertSame(array(array('perPage', 10), array('currentPage', 2), array('displayPageLinks', 5), array('queryStringVariable', 'page'), array('render', '/entries')), $pagination->calls);
+        $baseUrl = new Url('entries');
+        $this->assertSame('<pagination>', $bridge->pagination(array('total_rows' => 100, 'per_page' => 10, 'current_page' => 2, 'base_url' => $baseUrl, 'page_links' => 5, 'page_query_string' => 'page')));
+        $this->assertSame(array(array('perPage', 10), array('currentPage', 2), array('displayPageLinks', 5), array('queryStringVariable', 'page'), array('render', $baseUrl)), $pagination->calls);
         $pagination->calls = array();
-        $bridge->pagination(array('total_rows' => 0, 'per_page' => 10, 'current_page' => 1, 'base_url' => '/entries'));
-        $this->assertCount(3, $pagination->calls);
+        $bridge->pagination(array('total_rows' => 0, 'per_page' => 10, 'current_page' => 1, 'base_url' => $baseUrl));
+        $this->assertSame(array(array('perPage', 10), array('currentPage', 1), array('render', $baseUrl)), $pagination->calls);
         $this->assertSame(array(100, 0), $paginationTotals);
     }
 

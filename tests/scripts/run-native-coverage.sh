@@ -31,6 +31,9 @@ archive-index|PAGE|7.5.0|archive-index
 updater-ee2|PAGE|2.5.0|updater-uninstall
 updater-ee5|PAGE|5.5.0|updater-uninstall
 updater-ee6|PAGE|6.5.0|updater-uninstall
+extract-checksum|PAGE|7.5.0|extract:checksum
+extract-size|PAGE|7.5.0|extract:size
+extract-truncated|PAGE|7.5.0|extract:truncated
 CONTEXTS
 python3 "$root/tests/scripts/render-native-coverage.py" "$report_dir" "$report_dir/summary.md"
 exit "$status"

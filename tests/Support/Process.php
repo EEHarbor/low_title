@@ -42,7 +42,7 @@ class Process
                 throw new \RuntimeException('Cannot start the native process');
             }
             fclose($pipes[0]);
-            $deadline = microtime(true) + $timeout;
+            $deadline = hrtime(true) + $timeout * 1000000000;
             $timedOut = false;
             do {
                 $status = proc_get_status($process);
@@ -53,7 +53,7 @@ class Process
                 if (!$status['running']) {
                     break;
                 }
-                if (microtime(true) >= $deadline) {
+                if (hrtime(true) >= $deadline) {
                     $timedOut = true;
                     self::stop($process, $pid, $ownedGroup);
                     $status = proc_get_status($process);
@@ -99,7 +99,7 @@ class Process
                 posix_kill(-$pid, $signal);
             }
             proc_terminate($process, $signal);
-            $deadline = microtime(true) + 0.25;
+            $deadline = hrtime(true) + 250000000;
             do {
                 $status = proc_get_status($process);
                 if (!$status['running']) {
@@ -109,7 +109,7 @@ class Process
                     return;
                 }
                 usleep(10000);
-            } while (microtime(true) < $deadline);
+            } while (hrtime(true) < $deadline);
         }
     }
 }

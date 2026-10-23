@@ -113,6 +113,20 @@ class UrlFactory
     }
 }
 
+class Pagination extends Recorder
+{
+    /**
+     * Require the CP URL object accepted by EE's pagination renderer.
+     *
+     * @param Url $baseUrl
+     * @return string
+     */
+    public function render(Url $baseUrl)
+    {
+        return parent::__call('render', array($baseUrl));
+    }
+}
+
 class Uri
 {
     public $path = 'cp/addons/settings/low_title/index';

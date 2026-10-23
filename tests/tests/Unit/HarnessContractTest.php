@@ -116,7 +116,7 @@ class HarnessContractTest extends TestCase
      */
     public function testNativeProcessDeadlineReapsChild($ignoreTerm)
     {
-        $started = microtime(true);
+        $started = hrtime(true);
         $code = ($ignoreTerm ? 'pcntl_signal(SIGTERM, SIG_IGN); ' : '') . 'echo getmypid(); fflush(STDOUT); usleep(7000000);';
         $command = array(PHP_BINARY, '-r', $code);
         $process = Process::run($command, dirname(__DIR__, 3), getenv(), 0.3);
@@ -125,7 +125,35 @@ class HarnessContractTest extends TestCase
         $this->assertSame((string) $process['pid'], $process['stdout']);
         $this->assertSame('', $process['stderr']);
         $this->assertFalse(posix_kill($process['pid'], 0));
-        $this->assertLessThan(3.0, microtime(true) - $started);
+        $this->assertLessThan(3000000000, hrtime(true) - $started);
+    }
+
+    /**
+     * Return values excluded by EE's pagination URL object contract.
+     *
+     * @return array
+     */
+    public static function invalidPaginationUrls()
+    {
+        return array(array('/entries'), array(null), array(array()), array(new \stdClass));
+    }
+
+    /**
+     * Accept a CP URL object and reject incompatible renderer arguments.
+     *
+     * @dataProvider invalidPaginationUrls
+     * @param mixed $invalid
+     * @return void
+     */
+    public function testPaginationUrlContract($invalid)
+    {
+        $pagination = new Pagination;
+        $pagination->returns['render'] = '<pagination>';
+        $url = new Url('entries');
+        $this->assertSame('<pagination>', $pagination->render($url));
+        $this->assertSame(array(array('render', $url)), $pagination->calls);
+        $this->expectException(\TypeError::class);
+        $pagination->render($invalid);
     }
 
     /**
