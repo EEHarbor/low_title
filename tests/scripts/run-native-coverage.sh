@@ -32,6 +32,11 @@ while IFS='|' read -r label request ee_version case_name; do
     if [[ "$label" == pagination-* ]]; then
         script="$root/tests/scripts/pagination-probe.php"
     fi
+    if [[ "$label" == session-* ]]; then
+        script="$root/tests/scripts/session-probe.php"
+        arguments+=("$temp_dir")
+        flags+=(-d "session.save_handler=files" -d "session.use_cookies=0" -d "session.cache_limiter=")
+    fi
     if LOW_TITLE_COVERAGE_SOURCE= LOW_TITLE_EE_REQUEST="$request" LOW_TITLE_EE_VERSION="$ee_version" LOW_TITLE_BRANCH_REPORT="$report_dir/$label.raw.json" TMPDIR="$temp_dir" "$runtime" -d error_reporting=-1 -d display_errors=stderr -d "sys_temp_dir=$temp_dir" -d "zend_extension=$extension" -d xdebug.mode=coverage -d "auto_prepend_file=$root/tests/Support/BranchFilter.php" "${flags[@]}" "$script" "${arguments[@]}" > "$report_dir/$label.stdout.json" 2> "$report_dir/$label.stderr.txt"; then
         printf '0' > "$report_dir/$label.exit"
     else
@@ -87,6 +92,14 @@ autoload-restricted-opcache-api|PAGE|7.5.0|restricted-opcache-api
 pagination-named-default|PAGE|7.5.0|named-default
 pagination-global-explicit|PAGE|7.5.0|global-explicit
 pagination-global-default|PAGE|7.5.0|global-default
+session-plain|PAGE|7.5.0|plain
+session-depth|PAGE|7.5.0|depth
+session-mode|PAGE|7.5.0|mode
+session-tmp-file|PAGE|7.5.0|tmp-file
+session-tmp-readonly|PAGE|7.5.0|tmp-readonly
+session-missing|PAGE|7.5.0|missing
+session-file|PAGE|7.5.0|file
+session-empty|PAGE|7.5.0|empty
 CONTEXTS
 python3 "$root/tests/scripts/render-native-coverage.py" "$report_dir" "$report_dir/summary.md"
 exit "$status"
