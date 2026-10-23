@@ -132,17 +132,42 @@ class VersionTest extends TestCase
     }
 
     /**
-     * Generate an encrypted update pixel locally without making a network request.
+     * Return development flags and optional Pro/site-license metadata.
      *
+     * @return array
+     */
+    public static function pixels()
+    {
+        return array(
+            array(null, array(), false, false),
+            array(false, array(), '', false),
+            array(0, array(), null, false),
+            array('0', array(), 'SITE-KEY', false),
+            array(1, array(array('module_version' => '3.0.0')), 'SITE-KEY', true),
+            array('1', array(array('module_version' => null)), false, true),
+            array(2, array(), false, false),
+        );
+    }
+
+    /**
+     * Select the intended pixel endpoint and encrypt it without a network request.
+     *
+     * @dataProvider pixels
+     * @param mixed $development
+     * @param array $pro
+     * @param mixed $siteLicense
+     * @param bool $local
      * @return void
      */
-    public function testVersionPixelIsEncryptedAndAddedOnce()
+    public function testVersionPixelIsEncryptedAndAddedOnce($development, $pro, $siteLicense, $local)
     {
         StaticCache::put('app_settings', array('version' => '1.2.3'));
+        $_GET['ldev'] = $development;
         $this->environment->config->config['base_url'] = 'https://example.test';
+        $this->environment->config->config['site_license_key'] = $siteLicense;
         $this->environment->cp = new Recorder;
         $this->environment->cp->returns = array('get_foot' => array(), 'add_to_foot' => null);
-        $this->environment->db->results = array(array(), array());
+        $this->environment->db->results = array($pro, array());
         $version = (new \ReflectionClass(VersionSubject::class))->newInstanceWithoutConstructor();
         $version->flux = new \Low\Title\FluxCapacitor\FluxCapacitor;
         $version->check();
@@ -151,10 +176,12 @@ class VersionTest extends TestCase
         $this->assertSame('add_to_foot', $this->environment->cp->calls[1][0]);
         $html = $this->environment->cp->calls[1][1];
         $this->assertStringContainsString('<div id="low_title__up"', $html);
+        $endpoint = $local ? 'http://localhost:2368/update.gif' : 'https://ping.eeharbor.com/update.gif';
+        $this->assertStringContainsString('background:url(' . $endpoint . '?', html_entity_decode($html, ENT_QUOTES, 'UTF-8'));
         $this->assertMatchesRegularExpression('/\?[a-f0-9]{1024}/', $html);
         $this->assertStringNotContainsString('https://example.test', $html);
         $this->environment->cp->returns['get_foot'] = array($html);
-        $this->environment->db->results = array(array(), array());
+        $this->environment->db->results = array($pro, array());
         $this->assertTrue($version->check());
         $this->assertCount(3, $this->environment->cp->calls);
         $this->assertSame(array(), $this->environment->db->results);

@@ -15,10 +15,6 @@ function ee($service = null, ...$arguments)
         return $environment;
     }
 
-    if ($service === 'db') {
-        return $environment->db->newQuery();
-    }
-
     if (isset($environment->services[$service])) {
         return $environment->services[$service] instanceof Closure ? call_user_func_array($environment->services[$service], $arguments) : $environment->services[$service];
     }

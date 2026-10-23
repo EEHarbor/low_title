@@ -35,7 +35,14 @@ for path, source in data['files'].items():
                 hits = dict(enumerate(hits))
             for slot, target in targets.items():
                 exits.append({'block': block_id, 'slot': slot, 'target': target, 'line': block['line_end'], 'hit': hits.get(slot, hits.get(str(slot), 0))})
-        rows.append({'file': origin, 'function': function, 'start_line': min((block['line_start'] for block in blocks.values()), default=0), 'end_line': max((block['line_end'] for block in blocks.values()), default=0), 'blocks': len(blocks), 'blocks_hit': len(blocks)-len(missing_blocks), 'exits': len(exits), 'exits_hit': sum(bool(exit['hit']) for exit in exits), 'uncovered_blocks': missing_blocks, 'uncovered_exits': [exit for exit in exits if not exit['hit']]})
+        start_line = min((block['line_start'] for block in blocks.values()), default=0)
+        end_line = max((block['line_end'] for block in blocks.values()), default=0)
+        runtime_range = None
+        attribution_matches = None
+        if origin.endswith('/Bridge/EE.php') and function.endswith('EE->__construct'):
+            runtime_range = data.get('context', {}).get('bridge_constructor')
+            attribution_matches = runtime_range is not None and runtime_range['start_line'] <= start_line <= end_line <= runtime_range['end_line']
+        rows.append({'file': origin, 'function': function, 'start_line': start_line, 'end_line': end_line, 'blocks': len(blocks), 'blocks_hit': len(blocks)-len(missing_blocks), 'exits': len(exits), 'exits_hit': sum(bool(exit['hit']) for exit in exits), 'uncovered_blocks': missing_blocks, 'uncovered_exits': [exit for exit in exits if not exit['hit']], 'runtime_source_range': runtime_range, 'attribution_matches': attribution_matches})
 result = {'runtime': data['runtime'], 'xdebug': data['xdebug'], 'metrics': 'Xdebug opcode blocks and out/out_hit exits; no cross-runtime/graph merging', 'methods': rows, 'sources': sources}
 output = pathlib.Path(sys.argv[2])
 output.write_text(json.dumps(result, indent=2) + '\n')

@@ -27,11 +27,13 @@ The initial skill coverage command found no tests and could not produce baseline
 ```sh
 ./tests/scripts/run-coverage.sh lines
 ./tests/scripts/run-coverage.sh branches
+./tests/scripts/run-native-coverage.sh
 # Both print unique REPORT_DIR paths and verify the pinned PHAR before execution.
 # Substitute those paths below.
 python3 tests/scripts/summarize-branches.py <branch-report-dir>/raw.json tests/reports/branches.json
 python3 tests/scripts/snapshot-coverage.py <line-report-dir>/clover.xml tests/reports/branches.json tests/reports/coverage-snapshot.json
 python3 tests/scripts/render-coverage.py tests/reports/coverage-snapshot.json tests/COVERAGE.md
+python3 tests/scripts/render-native-coverage.py <native-report-dir> tests/NATIVE_COVERAGE.md
 
 /Users/tomjaeger/.codex/skills/ee-addon-phpunit-coverage-writer/scripts/addon_method_coverage_report.py \
   --repo-root "$PWD" --source-root low_title --coverage-clover <line-report-dir>/clover.xml --reuse-clover --json
@@ -51,15 +53,15 @@ All runs use PHPUnit **9.6.38**, explicit Herd binaries, fresh unique report fil
 
 | PHP | Cases | Assertions | Errors | Failures | Warnings | Risky | Skipped | Incomplete |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| 7.4.33 | 541 | 1613 | 15 | 22 | 0 | 0 | 0 | 0 |
-| 8.0.30 | 541 | 1593 | 16 | 22 | 0 | 0 | 0 | 0 |
-| 8.1.33 | 541 | 1593 | 16 | 22 | 0 | 0 | 0 | 0 |
-| 8.2.30 | 541 | 1535 | 24 | 32 | 0 | 0 | 0 | 0 |
-| 8.3.28 | 541 | 1535 | 24 | 32 | 0 | 0 | 0 | 0 |
-| 8.4.15 | 541 | 1535 | 24 | 32 | 0 | 0 | 0 | 0 |
-| 8.5.0 | 541 | 1535 | 24 | 32 | 0 | 0 | 0 | 0 |
+| 7.4.33 | 589 | 1813 | 15 | 22 | 0 | 0 | 0 | 0 |
+| 8.0.30 | 589 | 1793 | 16 | 22 | 0 | 0 | 0 | 0 |
+| 8.1.33 | 589 | 1793 | 16 | 22 | 0 | 0 | 0 | 0 |
+| 8.2.30 | 589 | 1726 | 24 | 35 | 0 | 0 | 0 | 0 |
+| 8.3.28 | 589 | 1726 | 24 | 35 | 0 | 0 | 0 | 0 |
+| 8.4.15 | 589 | 1726 | 24 | 35 | 0 | 0 | 0 | 0 |
+| 8.5.0 | 589 | 1726 | 24 | 35 | 0 | 0 | 0 | 0 |
 
-Latest full-matrix reports and exact per-case diagnostic output are under `tests/reports/matrix-DRVDOuNE` with an ignored `tests/reports/matrix-results.json` summary. No warnings, risky tests, skipped tests, or incomplete selections were hidden. PHP 7.4 and PHP 8.5 each execute every configured case.
+Latest full-matrix reports and exact per-case diagnostic output are under `tests/reports/matrix-AxEZcodI` with an ignored `tests/reports/matrix-results.json` summary. No warnings, risky tests, skipped tests, or incomplete selections were hidden. PHP 7.4 and PHP 8.5 each execute every configured case.
 
 ## Production regressions and strict-diagnostic failures
 
@@ -79,16 +81,26 @@ Source failures remain assertions/errors, with no skipped source defects, expect
 
 ## Isolation and remaining harness limits
 
-Each test restores the caller EE global, request arrays, form-helper global, error reporting/handler, include path, and autoload stack; a nested-context contract test verifies restoration. Class declarations, method-local static maps, and PHAR's process-wide `interceptFileFuncs()` effect cannot be unloaded or reversed in the parent suite. Bootstrap/discovery loads are documented process-level state. Native loading/diagnostic cases run in fresh PHP processes, and algorithm subjects use unique cache keys. Full 541-case randomized runs on PHP 7.4 and 8.5 with seed `20261023` reproduce the ordered counts exactly; logs are `tests/reports/v4-random74.txt` and `v4-random85.txt`.
+Each test restores the caller EE global, request arrays, form-helper global, error reporting/handler, include path, and autoload stack; a nested-context contract test verifies restoration. Class declarations, method-local static maps, and PHAR's process-wide `interceptFileFuncs()` effect cannot be unloaded or reversed in the parent suite. Bootstrap/discovery loads are documented process-level state. Native loading/diagnostic cases run in fresh PHP processes, and algorithm subjects use unique cache keys. Full 589-case randomized runs on PHP 7.4 and 8.5 with seed `20261023` reproduce the ordered counts exactly; logs are `tests/reports/v5b-random74.txt` and `v5b-random85.txt`.
 
 All native fixture children set both `sys_temp_dir` and `TMPDIR` to their unique owned directory. Extraction probes assert the actual `Extract_low_title::$temp` path and verify cleanup, including repeated runs. Review caught earlier probes falling back to shared `/tmp/pharextract/low_title`; that existing shared tree is preserved because ownership is not established.
 
-Native subprocess readers are sequential and currently have no timeout; controlled probes have small outputs and finite shipped inputs. A nonblocking shared process helper remains a robustness gap, not a source failure or coverage completion claim. The raw collector initially exhausted its command-local 1 GB limit while serializing tooling graphs; the final runner installs an early filter and filters the persisted JSON to the complete shipped loose tree, physical PHAR, and all PHAR members. A guard rejects runs without an executed source function graph. The latest raw JSON contains 26 source files and no test/tooling paths; the declaration-only EE6 member remains in the 27-unit inventory. That failed artifact is not reused.
+PHPUnit native, autoload, installation, and launcher probes use `Support/Process.php`: independent file-backed stdout/stderr, a default two-second deadline, a file-confirmed owned process group, TERM/KILL escalation, child reaping, and finally-closed owned temporary streams. Controls retain one MiB on each output stream and bound seven-second stalls, including SIGTERM-ignoring children, while checking that the owned PID is gone. POSIX/pcntl support was verified on all seven explicit Herd runtimes. The standalone native-coverage shell command runs its finite controlled contexts directly. The raw collector initially exhausted its command-local 1 GB limit while serializing tooling graphs; the final runner installs an early filter and filters the persisted JSON to the complete shipped loose tree, physical PHAR, and all PHAR members. A guard rejects runs without an executed source function graph. The latest raw JSON contains 26 source files and no test/tooling paths; the declaration-only EE6 member remains in the 27-unit inventory. That failed artifact is not reused.
 
 ## Coverage, review, and publication
 
 See `COVERAGE.md` for every source unit, every inventoried function/method, line measurements, actual block/exit measurements, unknown procedural metrics, and exact remaining line/exit locations. The seven loose plugin methods reach 100% executable lines; only the private field-map methods currently reach every reported opcode exit. Fixed nonempty loops, synthetic exits, native-context graphs, unreachable constants/platforms, and source exceptions prevent a full branch-completion claim.
 
-Independent exact-diff review approved the incomplete source-red checkpoint with no remaining actionable findings. The approved full-index patch SHA-256 is `ea7f45de0007dfcf0a51f4fbf816b149e4fcc322fc7dc4a35ae39ed1c1700f31`. Review independently reproduced all seven full suites, randomized PHP 7.4/8.5 runs with seed `20261026`, repeated owned-directory extraction cleanup, native EE-facade replacement failure, and every saved per-method line/block/exit count across all 27 inventory units. Initial and follow-up findings about fixture fidelity, persistent deletion, stub graph mapping, tool verification, caller restoration, TMPDIR isolation, raw-scope filtering, successful probe metadata, and loaded-facade contracts were corrected before approval. The documented subprocess timeout, irreversible process state, integration, and branch gaps remain.
+Independent exact-diff review approved the first 541-case source-red checkpoint with no remaining actionable findings. The approved full-index patch SHA-256 is `ea7f45de0007dfcf0a51f4fbf816b149e4fcc322fc7dc4a35ae39ed1c1700f31`. Review independently reproduced all seven full suites, randomized PHP 7.4/8.5 runs with seed `20261026`, repeated owned-directory extraction cleanup, native EE-facade replacement failure, and every saved per-method line/block/exit count across all 27 inventory units. Initial and follow-up findings about fixture fidelity, persistent deletion, stub graph mapping, tool verification, caller restoration, TMPDIR isolation, raw-scope filtering, successful probe metadata, and loaded-facade contracts were corrected before approval. The first checkpoint documented subprocess timeout, irreversible process state, integration, and branch gaps. The current follow-up resolves the PHPUnit native timeout/output issue; process-state, integration, and branch gaps remain.
 
-Test checkpoint `11a745b8cb4eceed87ad85cfab1a58a9fdb10c7c` was committed and pushed to `origin/unit-tests-2026`. Fresh `git ls-remote` matched that exact SHA, local/remote divergence was `0 0`, and the checkout was clean. Production diff against the pinned baseline was empty and the PHAR hash remained unchanged. This status record is a documentation-only follow-up on the same branch. No completed-file coverage milestone or full campaign completion is claimed. Remaining work requires source fixes or additional compatible native-context instrumentation; production changes remain outside authorization.
+Test checkpoint `11a745b8cb4eceed87ad85cfab1a58a9fdb10c7c` was committed and pushed to `origin/unit-tests-2026`. Fresh `git ls-remote` matched that exact SHA, local/remote divergence was `0 0`, and the checkout was clean. Production diff against the pinned baseline was empty and the PHAR hash remained unchanged. This status record is a documentation-only follow-up on the same branch. No completed-file coverage milestone or full campaign completion is claimed. Further feasible work includes the legacy get_instance fallback and fieldtype system/app/installer loading paths, alongside source and instrumentation blockers. Production changes remain outside authorization.
+
+## Follow-up checkpoint under review
+
+The current 589-case follow-up adds empty extension hooks, inactive/empty navigation, default alert modifiers, empty legacy settings/cache state, persistent-cache empty and subdirectory-preservation outcomes, development update-pixel endpoints, optional Pro/site-license values, and EE2.5 slash/navigation contracts. Native probes exercise CP constructors/menu output, all EE2–7 bridge selections and configured theme URLs, the archive fallback loader, and old/new updater membership tables. Three additional PHP >= 8.2 failures are native CP constructor dynamic-property diagnostics; those source regressions remain red. The follow-up is not yet independently approved or published.
+
+Separate native measurements are in `NATIVE_COVERAGE.md`, generated from `tests/reports/native-coverage-YV551OPP`. All 14 PHP 7.4 contexts exit successfully. Their raw graphs remain separate from parent Clover and one another. Tab and fieldtype CP constructor lines and all archive fallback-loader lines execute in these contexts, with uncovered exits still reported. Parent `Version::check()` improves to 29/30 lines and 16/23 exits; its immutable license-constant path remains unexecuted. Persistent `clear()` reaches all eight blocks and 9/11 exits, while synthetic exits remain uncovered.
+
+The raw collector now records Reflection constructor source ranges. Xdebug 3.1.6 incorrectly assigns all conditional `Bridge/EE::__construct` graphs to its first declaration (42–45), even when the runtime method is at 50/58/66/74/82. The raw and normalized graphs are preserved, but source-range mismatches have unknown per-method block/exit metrics. The parent and native renderers do not assign those counters to a different declaration.
+
+Root review of the first follow-up packet identified two harness defects before publication: blocking sequential native output and the DI database factory depending on the facade property. The replacement packet uses the bounded shared runner above. The database factory captures its original backend independently; direct controls verify that facade removal/replacement leaves fresh DI builders attached to that original backend. The updater native oracle now checks the entire ordered mutation sequence and ownership predicates. These are harness fixes; source regressions remain visible.

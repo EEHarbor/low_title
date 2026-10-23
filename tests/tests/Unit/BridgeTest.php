@@ -220,6 +220,21 @@ class BridgeTest extends TestCase
     }
 
     /**
+     * Preserve empty primary cache state while updating a cached legacy setting.
+     *
+     * @return void
+     */
+    public function testLegacySettingsWriteWithoutCachedTableNames()
+    {
+        StaticCache::put('app_settings', array('version' => '1.2.3'));
+        $bridge = $this->bridge('EE2');
+        $bridge->setConfig('custom', 'updated');
+        $this->assertSame('updated', $bridge->getConfig('custom'));
+        $this->assertSame(array(), $this->environment->db->data_cache);
+        $this->assertSame(array(array('table_exists', 'low_title_settings')), $this->environment->db->journal->calls);
+    }
+
+    /**
      * Return modern control-panel URL routing cases.
      *
      * @return array
@@ -437,6 +452,7 @@ class BridgeTest extends TestCase
             foreach (array('message_error', 'message_failure', 'message_notice', 'message_success') as $type) {
                 $cases[] = array($bridge[0], $type);
             }
+            $cases[] = array($bridge[0], 'message_success', array());
         }
 
         return $cases;
@@ -448,9 +464,10 @@ class BridgeTest extends TestCase
      * @dataProvider alerts
      * @param string $version
      * @param string $type
+     * @param array $modifiers
      * @return void
      */
-    public function testFlashMessages($version, $type)
+    public function testFlashMessages($version, $type, $modifiers = array('missingMethod', 'cannotClose'))
     {
         $alert = new Alert;
         foreach (array('make', 'makeInline', 'asIssue', 'asWarning', 'asSuccess', 'withTitle', 'addToBody', 'canClose', 'defer') as $method) {
@@ -458,13 +475,18 @@ class BridgeTest extends TestCase
         }
         $this->environment->services['CP/Alert'] = $alert;
         $this->environment->session->returns['set_flashdata'] = null;
-        $this->bridge($version)->flashData($type, 'Title', 'Body', array('missingMethod', 'cannotClose'));
+        $this->bridge($version)->flashData($type, 'Title', 'Body', $modifiers);
         if ($version === 'EE2') {
             $this->assertSame(array(array('set_flashdata', $type, 'Title Body')), $this->environment->session->calls);
             return;
         }
         $severity = in_array($type, array('message_error', 'message_failure'), true) ? 'asIssue' : ($type === 'message_notice' ? 'asWarning' : 'asSuccess');
-        $this->assertSame(array(array($version === 'EE3' ? 'make' : 'makeInline', 'Title'), array($severity), array('withTitle', 'Title'), array('addToBody', 'Body'), array('canClose'), array('cannotClose'), array('defer')), $alert->calls);
+        $expected = array(array($version === 'EE3' ? 'make' : 'makeInline', 'Title'), array($severity), array('withTitle', 'Title'), array('addToBody', 'Body'), array('canClose'));
+        if (in_array('cannotClose', $modifiers, true)) {
+            $expected[] = array('cannotClose');
+        }
+        $expected[] = array('defer');
+        $this->assertSame($expected, $alert->calls);
     }
 
     /**
@@ -541,6 +563,48 @@ class BridgeTest extends TestCase
     }
 
     /**
+     * Return empty navigation and nonmatching routes for modern bridges.
+     *
+     * @return array
+     */
+    public static function inactiveNavigation()
+    {
+        $cases = array();
+        foreach (array('EE3', 'EE4', 'EE5', 'EE6') as $bridge) {
+            $cases[] = array($bridge, array());
+            $cases[] = array($bridge, array('settings' => 'Settings'));
+        }
+
+        return $cases;
+    }
+
+    /**
+     * Retain the caller's heading and breadcrumbs when no navigation item is active.
+     *
+     * @dataProvider inactiveNavigation
+     * @param string $version
+     * @param array $items
+     * @return void
+     */
+    public function testInactiveNavigationPreservesCallerHeading($version, $items)
+    {
+        $sidebar = new Sidebar;
+        $factory = new Recorder;
+        $factory->returns['make'] = $sidebar;
+        $this->environment->services['CP/Sidebar'] = $factory;
+        $this->environment->uri->path = 'cp/addons/settings/low_title/unrelated';
+        $this->environment->view->cp_page_title = 'Caller heading';
+        $this->bridge($version)->getNav($items);
+        $this->assertSame('Caller heading', $this->environment->view->cp_page_title);
+        $this->assertSame(array(), $this->environment->cp->calls);
+        $this->assertCount(count($items), $sidebar->items);
+        foreach ($sidebar->items as $item) {
+            $this->assertFalse($item->active);
+            $this->assertSame(array(), $item->buttons);
+        }
+    }
+
+    /**
      * Read the legacy key/value structure settings shape through each bridge.
      *
      * @dataProvider bridges
@@ -554,6 +618,22 @@ class BridgeTest extends TestCase
         $class = 'Low\\Title\\FluxCapacitor\\Bridge\\' . $version;
         $bridge = new $class(array('module' => 'structure', 'module_name' => 'Structure'));
         $this->assertSame('kept', $bridge->getConfig('custom'));
+    }
+
+    /**
+     * Fall back to module metadata when the legacy key/value table has no rows.
+     *
+     * @dataProvider bridges
+     * @param string $version
+     * @return void
+     */
+    public function testEmptyLegacyStructureSettings($version)
+    {
+        $this->environment->db->tableExists = true;
+        $this->environment->db->results = array(array(), array());
+        $class = 'Low\\Title\\FluxCapacitor\\Bridge\\' . $version;
+        $bridge = new $class(array('module' => 'structure', 'module_name' => 'Structure'));
+        $this->assertSame(require PATH_THIRD . 'low_title/addon.setup.php', $bridge->getSettings(true));
     }
 
     /**

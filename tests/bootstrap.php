@@ -25,10 +25,17 @@ if ($branchReport) {
         if (!$observed) {
             throw new RuntimeException('No shipped-source function graph was executed');
         }
-        file_put_contents($branchReport, json_encode(array('runtime' => PHP_VERSION, 'xdebug' => phpversion('xdebug'), 'files' => $data), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        $context = array('ee_version' => defined('APP_VER') ? APP_VER : null, 'request' => defined('REQ') ? REQ : null);
+        $bridgeClass = 'Low\\Title\\FluxCapacitor\\Bridge\\EE';
+        if (class_exists($bridgeClass, false)) {
+            $constructor = new ReflectionMethod($bridgeClass, '__construct');
+            $context['bridge_constructor'] = array('start_line' => $constructor->getStartLine(), 'end_line' => $constructor->getEndLine());
+        }
+        file_put_contents($branchReport, json_encode(array('runtime' => PHP_VERSION, 'xdebug' => phpversion('xdebug'), 'context' => $context, 'files' => $data), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     });
 }
 require_once __DIR__ . '/Support/Environment.php';
+require_once __DIR__ . '/Support/Process.php';
 require_once __DIR__ . '/Support/Collaborators.php';
 require_once __DIR__ . '/Support/functions.php';
 require_once __DIR__ . '/Support/Fieldtype.php';
@@ -40,7 +47,7 @@ if (!defined('BASEPATH')) {
     define('FILE_WRITE_MODE', 0666);
     define('DIR_WRITE_MODE', 0777);
     define('APP_VER', getenv('LOW_TITLE_EE_VERSION') ?: '7.5.0');
-    define('REQ', 'PAGE');
+    define('REQ', getenv('LOW_TITLE_EE_REQUEST') === 'CP' ? 'CP' : 'PAGE');
     define('BASE', '/admin.php?S=0');
     define('AMP', '&amp;');
     define('SYSPATH', __DIR__ . '/fixtures/nonexistent-system/');

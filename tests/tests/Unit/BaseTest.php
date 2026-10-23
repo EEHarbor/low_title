@@ -158,6 +158,18 @@ class BaseTest extends TestCase
     }
 
     /**
+     * Store the installed extension version when no hooks need registration.
+     *
+     * @return void
+     */
+    public function testExtensionWithNoHooksStillUpdatesItsVersion()
+    {
+        $extension = $this->subject('ExtensionSubject');
+        $this->assertTrue($extension->activateExtension());
+        $this->assertSame(array(array('update', 'extensions', array('version' => '1.2.3'), array('class' => ExtensionSubject::class))), $this->environment->db->calls);
+    }
+
+    /**
      * Require the legacy registration alias to preserve explicitly passed options.
      *
      * @return void

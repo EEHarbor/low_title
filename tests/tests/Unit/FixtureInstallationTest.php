@@ -11,7 +11,7 @@ class FixtureInstallationTest extends TestCase
      */
     public static function installations()
     {
-        return array(array('legacy-inline-view'), array('legacy-session'), array('legacy-cache'));
+        return array(array('legacy-inline-view'), array('legacy-session'), array('legacy-cache'), array('legacy-slashes'), array('legacy-navigation'));
     }
 
     /**
@@ -34,12 +34,10 @@ class FixtureInstallationTest extends TestCase
         $this->assertSame(hash_file('sha256', $archive), hash_file('sha256', $copy));
         $command = array(PHP_BINARY, '-d', 'error_reporting=-1', '-d', 'display_errors=stderr', '-d', 'xdebug.mode=off', '-d', 'sys_temp_dir=' . $directory, $root . '/tests/scripts/fixture-probe.php', $case, $directory);
         try {
-            $process = proc_open($command, array(1 => array('pipe', 'w'), 2 => array('pipe', 'w')), $pipes, $root, array_merge($_ENV, array('LOW_TITLE_COVERAGE_SOURCE' => '', 'LOW_TITLE_BRANCH_REPORT' => '', 'TMPDIR' => $directory)));
-            $stdout = stream_get_contents($pipes[1]);
-            $stderr = stream_get_contents($pipes[2]);
-            fclose($pipes[1]);
-            fclose($pipes[2]);
-            $exit = proc_close($process);
+            $process = Process::run($command, $root, array_merge($_ENV, array('LOW_TITLE_COVERAGE_SOURCE' => '', 'LOW_TITLE_BRANCH_REPORT' => '', 'TMPDIR' => $directory)));
+            $stdout = $process['stdout'];
+            $stderr = $process['stderr'];
+            $exit = $process['exit'];
             $this->assertSame(0, $exit, $stdout . $stderr);
             $this->assertSame('', $stderr);
             $this->assertSame(array('ok' => true, 'case' => $case), json_decode($stdout, true));

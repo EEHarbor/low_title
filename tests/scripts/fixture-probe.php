@@ -40,6 +40,23 @@ try {
             throw new RuntimeException('Legacy persistent flag did not fall back to request cache');
         }
     }
+    if ($case === 'legacy-slashes') {
+        ee()->functions = new \LowTitleTests\Recorder;
+        ee()->functions->returns['remove_double_slashes'] = 'https://example.test/path';
+        if ($bridge->reduce_double_slashes('https://example.test//path') !== 'https://example.test/path' || ee()->functions->calls !== array(array('remove_double_slashes', 'https://example.test//path'))) {
+            throw new RuntimeException('EE2.5 slash normalization did not delegate its input to the native helper');
+        }
+    }
+    if ($case === 'legacy-navigation') {
+        ee()->cp = new \LowTitleTests\Recorder;
+        ee()->cp->returns['set_right_nav'] = null;
+        $bridge->getNav(array());
+        $bridge->getNav(array('settings' => 'Settings'));
+        $url = BASE . '&amp;C=addons_modules&amp;M=show_module_cp&amp;module=low_title&amp;method=settings&amp;D=cp';
+        if (ee()->cp->calls !== array(array('set_right_nav', array()), array('set_right_nav', array('Settings' => $url)))) {
+            throw new RuntimeException('EE2.5 navigation did not clear or replace the right navigation');
+        }
+    }
     echo json_encode(array('ok' => true, 'case' => $case));
 } catch (Throwable $exception) {
     echo json_encode(array('ok' => false, 'case' => $case, 'message' => $exception->getMessage(), 'file' => $exception->getFile(), 'line' => $exception->getLine()));

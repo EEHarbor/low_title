@@ -47,6 +47,88 @@ class HarnessContractTest extends TestCase
     }
 
     /**
+     * Preserve the independent DI backend when the legacy facade DB is removed.
+     *
+     * @return void
+     */
+    public function testDatabaseFactorySurvivesFacadeRemoval()
+    {
+        $database = $this->environment->db;
+        $database->results = array(array(array('title' => 'original-backend')));
+        $this->environment->remove('db');
+        $query = ee('db');
+        $this->assertFalse($this->environment->has('db'));
+        $this->assertNotSame($database, $query);
+        $this->assertSame('original-backend', $query->get()->row()->title);
+        $this->assertSame(array(), $database->results);
+    }
+
+    /**
+     * Keep legacy DB replacement separate from the registered DI backend.
+     *
+     * @return void
+     */
+    public function testDatabaseFactoryIgnoresFacadeReplacement()
+    {
+        $database = $this->environment->db;
+        $database->results = array(array(array('title' => 'original-backend')));
+        $replacement = new Database;
+        $replacement->results = array(array(array('title' => 'replacement-backend')));
+        $this->environment->remove('db');
+        $this->environment->set('db', $replacement);
+        $this->assertSame($replacement, $this->environment->db);
+        $this->assertSame('original-backend', ee('db')->get()->row()->title);
+        $this->assertSame(array(array(array('title' => 'replacement-backend'))), $replacement->results);
+        $this->assertSame(array(), $replacement->calls);
+    }
+
+    /**
+     * Drain both large output streams without a pipe-order deadlock.
+     *
+     * @return void
+     */
+    public function testNativeProcessRetainsLargeOutput()
+    {
+        $command = array(PHP_BINARY, '-r', 'fwrite(STDERR, str_repeat("e", 1048576)); fwrite(STDOUT, str_repeat("o", 1048576));');
+        $process = Process::run($command, dirname(__DIR__, 3), getenv());
+        $this->assertSame(0, $process['exit']);
+        $this->assertFalse($process['timed_out']);
+        $this->assertSame(str_repeat('o', 1048576), $process['stdout']);
+        $this->assertSame(str_repeat('e', 1048576), $process['stderr']);
+    }
+
+    /**
+     * Return ordinary and SIGTERM-ignoring stalled process controls.
+     *
+     * @return array
+     */
+    public static function stalledProcesses()
+    {
+        return array(array(false), array(true));
+    }
+
+    /**
+     * Bound a stalled native child and reap its owned PID before returning.
+     *
+     * @dataProvider stalledProcesses
+     * @param bool $ignoreTerm
+     * @return void
+     */
+    public function testNativeProcessDeadlineReapsChild($ignoreTerm)
+    {
+        $started = microtime(true);
+        $code = ($ignoreTerm ? 'pcntl_signal(SIGTERM, SIG_IGN); ' : '') . 'echo getmypid(); fflush(STDOUT); usleep(7000000);';
+        $command = array(PHP_BINARY, '-r', $code);
+        $process = Process::run($command, dirname(__DIR__, 3), getenv(), 0.3);
+        $this->assertTrue($process['timed_out']);
+        $this->assertSame(124, $process['exit']);
+        $this->assertSame((string) $process['pid'], $process['stdout']);
+        $this->assertSame('', $process['stderr']);
+        $this->assertFalse(posix_kill($process['pid'], 0));
+        $this->assertLessThan(3.0, microtime(true) - $started);
+    }
+
+    /**
      * Reject loaded values, including null, and permit registration after removal.
      *
      * @return void
@@ -207,12 +289,10 @@ class HarnessContractTest extends TestCase
         chmod($runtime, 0755);
         chmod($directory . '/verify.sh', 0755);
         try {
-            $process = proc_open(array('/bin/bash', $directory . '/run-phpunit.sh', '--version'), array(1 => array('pipe', 'w'), 2 => array('pipe', 'w')), $pipes, $root, array_merge($_ENV, array('LOW_TITLE_PHP_BIN' => $runtime)));
-            $stdout = stream_get_contents($pipes[1]);
-            $stderr = stream_get_contents($pipes[2]);
-            fclose($pipes[1]);
-            fclose($pipes[2]);
-            $exit = proc_close($process);
+            $process = Process::run(array('/bin/bash', $directory . '/run-phpunit.sh', '--version'), $root, array_merge($_ENV, array('LOW_TITLE_PHP_BIN' => $runtime)));
+            $stdout = $process['stdout'];
+            $stderr = $process['stderr'];
+            $exit = $process['exit'];
             $this->assertSame(1, $exit, $stdout . $stderr);
             $this->assertFileDoesNotExist($marker);
         } finally {

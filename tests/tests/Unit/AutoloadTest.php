@@ -28,13 +28,14 @@ class AutoloadTest extends TestCase
         $root = dirname(__DIR__, 3);
         $command = array(PHP_BINARY, '-d', 'error_reporting=-1', '-d', 'display_errors=stderr', '-d', 'xdebug.mode=off', '-d', 'sys_temp_dir=' . $directory, '-d', 'opcache.enable_cli=' . ($case === 'opcache' ? '1' : '0'), '-d', 'opcache.validate_permission=' . ($case === 'opcache' ? '1' : '0'), $root . '/tests/scripts/autoload-probe.php', $case, $directory);
         try {
-            $process = proc_open($command, array(1 => array('pipe', 'w'), 2 => array('pipe', 'w')), $pipes, $root, array_merge($_ENV, array('LOW_TITLE_COVERAGE_SOURCE' => '', 'LOW_TITLE_BRANCH_REPORT' => '', 'TMPDIR' => $directory)));
-            $stdout = stream_get_contents($pipes[1]);
-            $stderr = stream_get_contents($pipes[2]);
-            fclose($pipes[1]);
-            fclose($pipes[2]);
-            $exit = proc_close($process);
+            $process = Process::run($command, $root, array_merge($_ENV, array('LOW_TITLE_COVERAGE_SOURCE' => '', 'LOW_TITLE_BRANCH_REPORT' => '', 'TMPDIR' => $directory)));
+            $stdout = $process['stdout'];
+            $stderr = $process['stderr'];
+            $exit = $process['exit'];
             $result = json_decode($stdout, true);
+            if (!is_array($result)) {
+                $this->fail('The loader probe returned no JSON result: ' . $stdout . $stderr);
+            }
             if ($case === 'extraction') {
                 $this->assertSame($directory, $result['environment_tmpdir']);
                 $this->assertSame($directory . '/pharextract/low_title', $result['extraction_directory']);

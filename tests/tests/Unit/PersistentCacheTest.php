@@ -80,13 +80,28 @@ class PersistentCacheTest extends TestCase
     {
         PersistentCache::set('first', 'one');
         PersistentCache::set('second', 'two');
+        mkdir($this->directory . '/low_title/unrelated-directory');
+        file_put_contents($this->directory . '/low_title/unrelated-directory/retained', 'untouched');
         StaticCache::put('unrelated', 'retained');
 
         $this->assertTrue(PersistentCache::clear());
-        $this->assertSame(array(), glob($this->directory . '/low_title/*'));
+        $this->assertSame(array($this->directory . '/low_title/unrelated-directory'), glob($this->directory . '/low_title/*'));
+        $this->assertSame('untouched', file_get_contents($this->directory . '/low_title/unrelated-directory/retained'));
         $this->assertSame('retained', StaticCache::get('unrelated'));
         $this->assertFalse(StaticCache::has(sha1('first'), true));
         $this->assertFalse(StaticCache::has(sha1('second'), true));
+    }
+
+    /**
+     * Create and repeatedly clear an empty module cache without diagnostics.
+     *
+     * @return void
+     */
+    public function testEmptyCacheCanBeClearedRepeatedly()
+    {
+        $this->assertTrue(PersistentCache::clear());
+        $this->assertTrue(PersistentCache::clear());
+        $this->assertSame(array(), glob($this->directory . '/low_title/*'));
     }
 
     /**

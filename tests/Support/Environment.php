@@ -331,6 +331,8 @@ class Environment extends \stdClass
     {
         $this->TMPL = new Template;
         $this->db = new Database;
+        $database = $this->db;
+        $this->services['db'] = function () use ($database) { return $database->newQuery(); };
         $this->config = new Config;
         $this->load = new Loader;
         $this->typography = new Typography;
