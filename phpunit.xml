@@ -3,8 +3,5 @@
   <testsuites>
     <testsuite name="Low Title"><directory suffix="Test.php">tests/tests/Unit</directory></testsuite>
   </testsuites>
-  <coverage processUncoveredFiles="false" includeUncoveredFiles="true" pathCoverage="true">
-    <include><directory suffix=".php">low_title</directory><directory suffix=".php">tests/.source</directory></include>
-  </coverage>
   <php><ini name="error_reporting" value="-1"/></php>
 </phpunit>

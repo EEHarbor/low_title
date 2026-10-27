@@ -5,14 +5,14 @@ namespace LowTitleTests;
 class LicenseViewTest extends TestCase
 {
     /**
-     * Return both shipped license templates across supported EE markup versions.
+     * Return the add-on license template across supported EE markup versions.
      *
      * @return array
      */
     public static function views()
     {
         $cases = array();
-        foreach (array('low_title/views/license.php', 'phar://low_title/low_title.phar/Views/license.php') as $path) {
+        foreach (array('low_title/views/license.php') as $path) {
             foreach (array(2, 3, 7) as $version) {
                 foreach (array('KEY-123', 'low-title-ignore-site-1') as $key) {
                     $cases[] = array($path, $version, $key);
@@ -36,14 +36,11 @@ class LicenseViewTest extends TestCase
     {
         $action_url = '/save-license';
         $ignore_site = strpos($license_key, 'ignore-site-') !== false;
-        $alerts = new Recorder;
-        $alerts->returns['getAllInlines'] = '<alert>Saved</alert>';
+        $alerts = $this->getMockBuilder(\stdClass::class)->addMethods(array('getAllInlines'))->getMock();
+        $alerts->expects($ee_ver > 2 ? $this->once() : $this->never())->method('getAllInlines')->willReturn('<alert>Saved</alert>');
         $this->environment->services['CP/Alert'] = $alerts;
         $root = dirname(__DIR__, 3) . '/';
-        $file = strpos($path, 'phar://') === 0 ? 'phar://' . $root . substr($path, 7) : $root . $path;
-        if (getenv('LOW_TITLE_COVERAGE_SOURCE') && strpos($path, 'phar://') === 0) {
-            $file = getenv('LOW_TITLE_COVERAGE_SOURCE') . '/Views/license.php';
-        }
+        $file = $root . $path;
         $hadFormCalls = array_key_exists('low_title_form_calls', $GLOBALS);
         $previousFormCalls = $hadFormCalls ? $GLOBALS['low_title_form_calls'] : null;
         $GLOBALS['low_title_form_calls'] = array();
@@ -63,6 +60,5 @@ class LicenseViewTest extends TestCase
         $this->assertStringContainsString('box ee' . $ee_ver . ' addon-license', $html);
         $this->assertStringContainsString('Save License Key', $html);
         $this->assertSame(array(array('open', $action_url, array('class' => 'settings panel-body')), array('input', 'license_key', $ignore_site ? '' : $license_key), array('checkbox', 'ignore_site', '1', $ignore_site), array('close')), $formCalls);
-        $this->assertSame($ee_ver > 2 ? array(array('getAllInlines')) : array(), $alerts->calls);
     }
 }

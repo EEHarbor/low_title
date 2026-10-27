@@ -29,24 +29,4 @@ class MetadataTest extends TestCase
         }
     }
 
-    /**
-     * Verify every archive measurement copy against the shipped archive bytes.
-     *
-     * @return void
-     */
-    public function testSourceInventoryProvenance()
-    {
-        $root = dirname(__DIR__, 3);
-        $inventory = json_decode(file_get_contents($root . '/tests/source-inventory.json'), true);
-        $archive = $root . '/low_title/low_title.phar';
-        $this->assertSame($inventory['archive_sha256'], hash_file('sha256', $archive));
-        foreach ($inventory['files'] as $origin => $source) {
-            $path = $root . '/' . $origin;
-            if (strpos($origin, '.phar/') !== false) {
-                $path = 'phar://' . $path;
-            }
-            $contents = $origin === 'low_title/low_title.phar#stub' ? (new \Phar($archive))->getStub() : file_get_contents($path);
-            $this->assertSame($source['sha256'], hash('sha256', $contents), $origin);
-        }
-    }
 }

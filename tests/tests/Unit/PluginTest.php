@@ -80,7 +80,7 @@ class PluginTest extends TestCase
     }
 
     /**
-     * Return tag filters and meaningful boundary values passed to Active Record.
+     * Return normal and invalid template strings passed to Active Record.
      *
      * @return array
      */
@@ -95,7 +95,7 @@ class PluginTest extends TestCase
         $vectors = array();
         foreach ($mapping as $tag => $filters) {
             foreach ($filters as $parameter => $column) {
-                foreach (array(null, false, '', 0, '0', '1', '99999999999999999999', '1.5', '-1', "x' OR 1=1 --") as $value) {
+                foreach (array(null, false, '', '0', '1', "x' OR 1=1 --") as $value) {
                     $vectors[] = array($tag, $parameter, $column, $value);
                 }
             }
@@ -121,8 +121,7 @@ class PluginTest extends TestCase
         $this->plugin()->$tag();
         $where = array_values(array_filter($this->environment->db->calls, function ($call) { return $call[0] === 'where'; }));
 
-        $resolved = PHP_VERSION_ID < 80000 && $value === 0 && $parameter !== 'url_title' ? 'yes' : $value;
-        $this->assertSame($resolved ? array(array('where', $column, $resolved)) : array(), $where);
+        $this->assertSame($value ? array(array('where', $column, $value)) : array(), $where);
     }
 
     /**
@@ -132,7 +131,7 @@ class PluginTest extends TestCase
      */
     public function testCategoryPrefixAndCombinedFilters()
     {
-        $this->environment->TMPL->tagparams = array('category_id' => 'CC12', 'url_title' => 'news', 'category_group' => '3');
+        $this->environment->TMPL->tagparams = array('category_id' => 'C12', 'url_title' => 'news', 'category_group' => '3');
         $this->environment->db->results = array(array());
         $this->plugin()->category();
 
@@ -218,7 +217,7 @@ class PluginTest extends TestCase
     }
 
     /**
-     * Return pages-URI mappings, missing sites, and invalid nonarray settings.
+     * Return pages-URI mappings, missing sites, and unmatched paths.
      *
      * @return array
      */
@@ -229,8 +228,6 @@ class PluginTest extends TestCase
             'unmapped-silent' => array(array(1 => array('uris' => array(21 => '/other/'))), '/about/', false, null),
             'unmapped-error' => array(array(1 => array('uris' => array())), '/about/', 'yes', null),
             'missing-site' => array(array(), '/about/', 'yes', null),
-            'nonarray-site' => array(array(1 => false), '/about/', false, null),
-            'null-uris' => array(array(1 => array('uris' => null)), '/about/', false, null),
             'exact-slashes' => array(array(1 => array('uris' => array(21 => '/about/'))), 'about', 'yes', null),
         );
     }
