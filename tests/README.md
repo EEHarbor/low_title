@@ -14,4 +14,4 @@ php74 -d error_reporting=-1 -d display_errors=1 -d display_startup_errors=1 test
 
 Historical coverage and evidence documents describe earlier suites; they do not describe the current scope.
 
-Current verification: PHP 7.4, 8.0, 8.1, 8.2, 8.3, 8.4, and 8.5 each passed 151 tests / 339 assertions with strict E_ALL diagnostics and no captured stderr. This is focused collaborator-based unit verification, not a live ExpressionEngine integration run.
+Current verification: 152 tests run with strict E_ALL diagnostics. PHP 7.4–8.1 pass with 341 assertions; PHP 8.2–8.5 report one error and 339 assertions because the actual add-on assigns an undeclared return_data property. This is focused collaborator-based unit verification, not a live ExpressionEngine integration run.
