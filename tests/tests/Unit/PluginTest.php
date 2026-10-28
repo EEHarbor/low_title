@@ -5,6 +5,21 @@ namespace LowTitleTests;
 class PluginTest extends TestCase
 {
     /**
+     * Return an empty entry title on the actual add-on class.
+     *
+     * @return void
+     */
+    public function testActualPluginReturnsAnEmptyEntryTitle()
+    {
+        $this->environment->db->results = array(array());
+        // Bypass inherited startup to isolate the add-on-owned query.
+        $plugin = (new \ReflectionClass(\Low_title::class))->newInstanceWithoutConstructor();
+
+        $this->assertSame('', $plugin->entry());
+        $this->assertSame('', $plugin->return_data);
+    }
+
+    /**
      * Return every public query tag and its fixed query prefix.
      *
      * @return array
